@@ -1,0 +1,21 @@
+{
+    "hints": {
+        "none": 100,
+        "mask": 0,
+        "agony": 0,
+        "always": 0
+    },
+    "hint_dist": {
+        "balanced": 0,
+        "bingo": 0,
+        "strong": 0,
+        "tournament": 0,
+        "tournament_s3": 0,
+        "useless": 100,
+        "very_strong": 0
+    },
+    "enhance_map_compass": {
+        "true": 0,
+        "false": 100
+    }
+}
