@@ -14,6 +14,10 @@
         "useless": 100,
         "very_strong": 0
     },
+    "misc_hints": {
+        "true": 0,
+        "false": 100
+    },
     "enhance_map_compass": {
         "true": 0,
         "false": 100
