@@ -1,0 +1,227 @@
+{
+    "allowedTricks": [
+        "logic_fewer_tunic_requirements",
+        "logic_grottos_without_agony",
+        "logic_child_deadhand",
+        "logic_man_on_roof",
+        "logic_dc_jump",
+        "logic_rusted_switches",
+        "logic_windmill_poh",
+        "logic_crater_bean_poh_with_hovers",
+        "logic_forest_vines",
+        "logic_goron_city_pot_with_strength",
+        "logic_lens_botw",
+        "logic_lens_castle",
+        "logic_lens_gtg",
+        "logic_lens_shadow",
+        "logic_lens_shadow_back",
+        "logic_lens_spirit",
+        "logic_visible_collisions",
+        "logic_deku_b1_webs_with_bow"
+    ],
+    "weights": [
+        {
+            "setting": "bridge_tokens",
+            "distribution": "uniform",
+            "min": 1,
+            "max": 50
+        },
+        {
+            "setting": "trials_random",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "trials",
+            "values": {
+                "0": 1,
+                "1": 1
+            }
+        },
+        {
+            "setting": "shuffle_interior_entrances",
+            "values": {
+                "off": 6,
+                "simple": 1,
+                "all": 1
+            }
+        },
+        {
+            "setting": "shuffle_grotto_entrances",
+            "conditionals": [
+                {
+                    "setting": "shuffle_interior_entrances",
+                    "conditions": [
+                        "simple",
+                        "all"
+                    ],
+                    "values": {
+                        "false": 1
+                    }
+                }
+            ],
+            "values": {
+                "true": 1,
+                "false": 2
+            }
+        },
+        {
+            "setting": "shuffle_dungeon_entrances",
+            "conditionals": [
+                {
+                    "setting": "shuffle_interior_entrances",
+                    "conditions": [
+                        "simple",
+                        "all"
+                    ],
+                    "values": {
+                        "false": 1
+                    }
+                },
+                {
+                    "setting": "shuffle_grotto_entrances",
+                    "conditions": [
+                        true
+                    ],
+                    "values": {
+                        "false": 1
+                    }
+                }
+            ],
+            "values": {
+                "true": 1,
+                "false": 1
+            }
+        },
+        {
+            "setting": "shuffle_overworld_entrances",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "mix_entrance_pools",
+            "values": {
+                "all": 0,
+                "indoor": 0,
+                "off": 1
+            }
+        },
+        {
+            "setting": "mq_dungeons",
+            "values": {
+                "0": 1
+            }
+        },
+        {
+            "setting": "shuffle_song_items",
+            "values": {
+                "song": 2,
+                "dungeon": 0,
+                "any": 1
+            }
+        },
+        {
+            "setting": "shuffle_scrubs",
+            "values": {
+                "off": 1,
+                "low": 1
+            }
+        },
+        {
+            "setting": "lacs_tokens",
+            "distribution": "uniform",
+            "min": 1,
+            "max": 50
+        },
+        {
+            "setting": "no_escape_sequence",
+            "values": {
+                "true": 1,
+                "false": 0
+            }
+        },
+        {
+            "setting": "no_epona_race",
+            "values": {
+                "true": 1,
+                "false": 0
+            }
+        },
+        {
+            "setting": "skip_some_minigame_phases",
+            "values": {
+                "true": 1,
+                "false": 0
+            }
+        },
+        {
+            "setting": "big_poe_count_random",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "big_poe_count",
+            "distribution": "uniform",
+            "min": 1,
+            "max": 4
+        },
+        {
+            "setting": "hints",
+            "values": {
+                "always": 1
+            }
+        },
+        {
+            "setting": "hint_dist",
+            "values": {
+                "balanced": 1,
+                "strong": 1,
+                "tournament": 1,
+                "tournament_s3": 1,
+                "very_strong": 1
+            }
+        },
+        {
+            "setting": "text_shuffle",
+            "values": {
+                "none": 1
+            }
+        },
+        {
+            "setting": "damage_multiplier",
+            "values": {
+                "half": 1,
+                "normal": 2,
+                "double": 1
+            }
+        },
+        {
+            "setting": "no_collectible_hearts",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "item_pool_value",
+            "default": {
+                "plentiful": 1,
+                "balanced": 2,
+                "scarce": 1,
+                "minimal": 0
+            }
+        },
+        {
+            "setting": "logic_earliest_adult_trade",
+            "values": {
+                "poachers_saw": 1
+            }
+        }
+    ]
+}

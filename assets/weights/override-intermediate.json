@@ -1,0 +1,114 @@
+{
+    "allowedTricks": [
+        "logic_fewer_tunic_requirements",
+        "logic_grottos_without_agony",
+        "logic_child_deadhand",
+        "logic_man_on_roof",
+        "logic_dc_jump",
+        "logic_rusted_switches",
+        "logic_windmill_poh",
+        "logic_crater_bean_poh_with_hovers",
+        "logic_forest_vines",
+        "logic_goron_city_pot_with_strength",
+        "logic_lens_botw",
+        "logic_lens_castle",
+        "logic_lens_gtg",
+        "logic_lens_shadow",
+        "logic_lens_shadow_back",
+        "logic_lens_spirit",
+        "logic_visible_collisions",
+        "logic_deku_b1_webs_with_bow"
+    ],
+    "weights": [
+        {
+            "setting": "bridge_tokens",
+            "distribution": "uniform",
+            "min": 1,
+            "max": 75
+        },
+        {
+            "setting": "trials_random",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "trials",
+            "values": {
+                "0": 1,
+                "1": 1,
+                "2": 1,
+                "3": 1
+            }
+        },
+        {
+            "setting": "shuffle_overworld_entrances",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "mq_dungeons",
+            "values": {
+                "0": 1,
+                "1": 1
+            }
+        },
+        {
+            "setting": "lacs_tokens",
+            "distribution": "uniform",
+            "min": 1,
+            "max": 75
+        },
+        {
+            "setting": "big_poe_count_random",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "big_poe_count",
+            "distribution": "uniform",
+            "min": 1,
+            "max": 7
+        },
+        {
+            "setting": "hints",
+            "values": {
+                "agony": 1,
+                "always": 7
+            }
+        },
+        {
+            "setting": "text_shuffle",
+            "values": {
+                "none": 1
+            }
+        },
+        {
+            "setting": "damage_multiplier",
+            "values": {
+                "half": 1,
+                "normal": 2,
+                "double": 1,
+                "quadruple": 1
+            }
+        },
+        {
+            "setting": "no_collectible_hearts",
+            "values": {
+                "true": 0,
+                "false": 1
+            }
+        },
+        {
+            "setting": "logic_earliest_adult_trade",
+            "values": {
+                "cojiro": 1
+            }
+        }
+    ]
+}
