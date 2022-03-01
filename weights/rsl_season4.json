@@ -8,6 +8,7 @@
         "geometric_dungeon_shortcuts": true,
         "conditionals": {
             "exclude_minimal_triforce_hunt": [true],
+            "triforce_count_based_on_item_pool": [true],
             "exclude_ice_trap_misery": [true],
             "disable_hideoutkeys_independence": [true],
             "restrict_one_entrance_randomizer": [false],
@@ -156,8 +157,8 @@
             "false": 3
         },
         "mix_entrance_pools": {
-            "all": 2,
-            "indoor": 3,
+            "Interior, GrottoGrave, Dungeon, Overworld": 2,
+            "Interior, GrottoGrave, Dungeon": 3,
             "off": 5
         },
         "decouple_entrances": {
@@ -165,16 +166,16 @@
             "false": 1
         },
         "owl_drops": {
-            "true": 1,
-            "false": 1
+            "balanced": 1,
+            "off": 1
         },
         "warp_songs": {
-            "true": 1,
-            "false": 1
+            "balanced": 1,
+            "off": 1
         },
         "spawn_positions": {
-            "true": 1,
-            "false": 1
+            "balanced": 1,
+            "off": 1
         },
         "mq_dungeons_random": {
             "true": 1,
@@ -442,8 +443,8 @@
             "coop2": 0
         },
         "misc_hints": {
-            "true": 1,
-            "false": 0
+            "altar, ganondorf, warp_songs": 1,
+            "warp_songs": 0
         },
         "text_shuffle": {
             "none": 19,

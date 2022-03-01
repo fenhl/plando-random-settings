@@ -1,6 +1,7 @@
-import random
+import decimal
 import json
 import os
+import random
 
 
 def parse_conditionals(conditional_list, weight_dict, random_settings, extra_starting_items):
@@ -8,6 +9,17 @@ def parse_conditionals(conditional_list, weight_dict, random_settings, extra_sta
     for cond, details in conditional_list.items():
         if details[0]:
             eval(cond + "(random_settings, weight_dict=weight_dict, extra_starting_items=extra_starting_items, cparams=details[1:])")
+
+
+def triforce_count_based_on_item_pool(random_settings, **kwargs):
+    """ Emulate the behavior of the randomizer from before the triforce_count_per_world setting was added. """
+    if random_settings['triforce_hunt'] == "true":
+        random_settings['triforce_count_per_world'] = int(({
+            'plentiful': decimal.Decimal('2'),
+            'balanced': decimal.Decimal('1.5'),
+            'scarce': decimal.Decimal('1.25'),
+            'minimal': decimal.Decimal('1'),
+        }[random_settings['item_pool_value']] * random_settings['triforce_goal_per_world']).to_integral_value(rounding=decimal.ROUND_HALF_UP))
 
 
 def exclude_minimal_triforce_hunt(random_settings, weight_dict, **kwargs):
@@ -62,6 +74,33 @@ def random_scrubs_start_wallet(random_settings, weight_dict, extra_starting_item
     """ If random scrubs is enabled, add a wallet to the extra starting items """
     if random_settings['shuffle_scrubs'] == 'random':
         extra_starting_items['starting_equipment'] += ['wallet']
+
+
+def dynamic_heart_or_skulltula_wincon(random_settings, **kwargs):
+    """ Rolls heart or skull win conditions seperately. Takes extra inputs [total weight of either or both win cons being heart or skulls, "bridge%/gbk%/both", weight of hearts rather than skulls] """
+    chance_of_skull_wincon = int(kwargs['cparams'][0])
+    weights = [int(x) for x in kwargs['cparams'][1].split('/')]
+    chance_of_hearts_instead_of_skulls = int(kwargs['cparams'][2])
+
+    # Roll for a skull win condition
+    skull_wincon = random.choices([True, False], weights=[chance_of_skull_wincon, 100-chance_of_skull_wincon])[0]
+    if not skull_wincon:
+        return
+
+    # Roll for bridge/bosskey/both
+    whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
+    if whichtype in ['bridge', 'both']:
+        if random_settings['starting_hearts'] < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
+            random_settings['bridge'] = 'hearts'
+            random_settings['bridge_hearts'] = random.randrange(random_settings['starting_hearts'] + 1, 21)
+        else:
+            random_settings['bridge'] = 'tokens'
+    if whichtype in ['gbk', 'both']:
+        if random_settings['starting_hearts'] < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
+            random_settings['shuffle_ganon_bosskey'] = 'hearts'
+            random_settings['ganon_bosskey_hearts'] = random.randrange(random_settings['starting_hearts'] + 1, 21)
+        else:
+            random_settings['shuffle_ganon_bosskey'] = 'tokens'
 
 
 def dynamic_skulltula_wincon(random_settings, **kwargs):

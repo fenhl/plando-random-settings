@@ -180,6 +180,7 @@ def generate_plando(weights, override_weights_fname, no_seed):
         remove_plando_if_random(random_settings)
 
     # Format numbers and bools to not be strings
+    special_lists = {"allowed_tricks", "disabled_locations", "starting_items", "starting_songs", "starting_equipment", "hint_dist_user", "dungeon_shortcuts"}
     for setting, value in random_settings.items():
         setting_type = get_setting_info(setting).type
         if setting_type is bool:
@@ -191,7 +192,12 @@ def generate_plando(weights, override_weights_fname, no_seed):
                 raise TypeError(f'Value for setting {setting!r} must be "true" or "false"')
         elif setting_type is int:
             value = int(value)
-        elif setting_type is not str and setting not in ["allowed_tricks", "disabled_locations", "starting_items", "starting_songs", "starting_equipment", "hint_dist_user", "dungeon_shortcuts"]:
+        elif setting_type is list and setting not in special_lists:
+            if value:
+                value = value.split(', ')
+            else:
+                value = []
+        elif setting_type is not str and setting not in special_lists:
             raise NotImplementedError(f'{setting} has an unsupported setting type: {setting_type!r}')
         random_settings[setting] = value
 

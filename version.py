@@ -1,6 +1,6 @@
-__version__ = "2.2.8"
+__version__ = "2.2.8 Fenhl-1"
 version_hash_1 = "Map"
 version_hash_2 = "Map"
 
-randomizer_version = '6.2.19 R-1'
-randomizer_commit = '82696953b53add6a2275c6f1c80fd253be36f6e1'
+randomizer_version = '6.2.30 Fenhl-9'
+randomizer_commit = '45fa7c8add7de87f65986f8a780e1ce5298b0de4'
