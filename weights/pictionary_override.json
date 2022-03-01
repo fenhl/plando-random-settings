@@ -1,0 +1,80 @@
+{
+    "options": {
+        "extra_conditionals": {
+            "exclude_minimal_triforce_hunt": [false],
+            "exclude_ice_trap_misery": [false],
+            "disable_hideoutkeys_independence": [false],
+            "random_scrubs_start_wallet": [false],
+            "dynamic_heart_or_skulltula_wincon": [true, 15, "40/40/20", 50]
+        }
+    },
+    "weights": {
+        "reachable_locations": {
+            "all": 1,
+            "goals": 1,
+            "beatable": 1
+        },
+        "plant_beans": {
+            "true": 1,
+            "false": 1
+        },
+        "shuffle_overworld_entrances": {
+            "true": 0,
+            "false": 1
+        },
+        "owl_drops": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
+        "warp_songs": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
+        "spawn_positions": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
+        "shuffle_hideoutkeys": {
+            "vanilla": 2,
+            "overworld": 1,
+            "any_dungeon": 1,
+            "keysanity": 2
+        },
+        "key_rings": {
+            "Thieves Hideout, Forest Temple, Fire Temple, Water Temple, Shadow Temple, Spirit Temple, Bottom of the Well, Gerudo Training Ground, Ganons Castle": 1,
+            "": 4
+        },
+        "enhance_map_compass": {
+            "true": 0,
+            "false": 1
+        },
+        "mq_dungeons_random": {
+            "true": 0,
+            "false": 1
+        },
+        "mq_dungeons": {
+            "0": 1
+        },
+        "correct_chest_appearances": {
+            "off": 1,
+            "textures": 0,
+            "sizes": 0
+        },
+        "hints": {
+            "none": 1
+        },
+        "hint_dist": {
+            "useless": 1
+        },
+        "misc_hints": {
+            "": 1
+        },
+        "deadly_bonks": {
+            "true": 1,
+            "false": 19
+        }
+    }
+}
