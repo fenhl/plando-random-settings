@@ -177,11 +177,14 @@
             "balanced": 1,
             "off": 1
         },
-        "mq_dungeons_random": {
-            "true": 1,
-            "false": 4
+        "dungeon_shortcuts_choice": {
+            "choice": 1
         },
-        "mq_dungeons": {
+        "mq_dungeons_mode": {
+            "random": 1,
+            "count": 4
+        },
+        "mq_dungeons_count": {
             "0": 4096,
             "1": 2048,
             "2": 1024,

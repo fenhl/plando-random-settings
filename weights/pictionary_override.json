@@ -51,11 +51,11 @@
             "true": 0,
             "false": 1
         },
-        "mq_dungeons_random": {
-            "true": 0,
-            "false": 1
+        "mq_dungeons_mode": {
+            "random": 0,
+            "count": 1
         },
-        "mq_dungeons": {
+        "mq_dungeons_count": {
             "0": 1
         },
         "correct_chest_appearances": {
