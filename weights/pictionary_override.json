@@ -8,7 +8,36 @@
             "dynamic_heart_or_skulltula_wincon": [true, 15, "40/40/20", 50]
         }
     },
+    "multiselect": {
+        "key_rings": {
+            "global_enable_percentage": 20,
+            "geometric": false,
+            "opt_percentage": {
+                "Thieves Hideout": 100,
+                "Forest Temple": 100,
+                "Fire Temple": 100,
+                "Water Temple": 100,
+                "Shadow Temple": 100,
+                "Spirit Temple": 100,
+                "Bottom of the Well": 100,
+                "Gerudo Training Ground": 100,
+                "Ganons Castle": 100
+            }
+        },
+        "misc_hints": {
+            "global_enable_percentage": 0
+        }
+    },
     "weights": {
+        "open_forest": {
+            "closed": 1,
+            "closed_deku": 1,
+            "open": 1
+        },
+        "require_gohma": {
+            "false": 1,
+            "true": 0
+        },
         "reachable_locations": {
             "all": 1,
             "goals": 1,
@@ -43,10 +72,6 @@
             "any_dungeon": 1,
             "keysanity": 2
         },
-        "key_rings": {
-            "Thieves Hideout, Forest Temple, Fire Temple, Water Temple, Shadow Temple, Spirit Temple, Bottom of the Well, Gerudo Training Ground, Ganons Castle": 1,
-            "": 4
-        },
         "enhance_map_compass": {
             "true": 0,
             "false": 1
@@ -69,8 +94,12 @@
         "hint_dist": {
             "useless": 1
         },
-        "misc_hints": {
-            "": 1
+        "item_pool_value": {
+            "ludicrous": 1,
+            "plentiful": 2,
+            "balanced": 9,
+            "scarce": 5,
+            "minimal": 3
         },
         "deadly_bonks": {
             "true": 1,
