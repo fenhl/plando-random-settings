@@ -73,7 +73,7 @@ def draw_choices_from_pool(itempool):
 
 def remove_plando_if_random(random_settings):
     """ For settings that have a _random option, remove the specific plando if _random is true """
-    settings_to_check = ["trials", "mq_dungeons_count", "chicken_count", "big_poe_count"]
+    settings_to_check = ["trials", "chicken_count", "big_poe_count"]
     for setting in settings_to_check:
         if random_settings[setting+'_random'] == "true":
             random_settings.pop(setting)

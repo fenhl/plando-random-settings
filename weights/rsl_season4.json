@@ -438,8 +438,10 @@
             "10": 1
         },
         "ocarina_songs": {
-            "true": 0,
-            "false": 1
+            "off": 1,
+            "frog": 0,
+            "warp": 0,
+            "all": 0
         },
         "correct_chest_appearances": {
             "off": 4,

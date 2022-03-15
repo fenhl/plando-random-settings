@@ -15,11 +15,17 @@ def triforce_count_based_on_item_pool(random_settings, **kwargs):
     """ Emulate the behavior of the randomizer from before the triforce_count_per_world setting was added. """
     if random_settings['triforce_hunt'] == "true":
         random_settings['triforce_count_per_world'] = int(({
+            'ludicrous': decimal.Decimal('2'),
             'plentiful': decimal.Decimal('2'),
             'balanced': decimal.Decimal('1.5'),
             'scarce': decimal.Decimal('1.25'),
             'minimal': decimal.Decimal('1'),
         }[random_settings['item_pool_value']] * random_settings['triforce_goal_per_world']).to_integral_value(rounding=decimal.ROUND_HALF_UP))
+    else:
+        if 'triforce_count_per_world' in random_settings:
+            del random_settings['triforce_count_per_world']
+        if 'triforce_goal_per_world' in random_settings:
+            del random_settings['triforce_goal_per_world']
 
 
 def exclude_minimal_triforce_hunt(random_settings, weight_dict, **kwargs):
@@ -90,15 +96,15 @@ def dynamic_heart_or_skulltula_wincon(random_settings, **kwargs):
     # Roll for bridge/bosskey/both
     whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
     if whichtype in ['bridge', 'both']:
-        if random_settings['starting_hearts'] < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
+        if int(random_settings['starting_hearts']) < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
             random_settings['bridge'] = 'hearts'
-            random_settings['bridge_hearts'] = random.randrange(random_settings['starting_hearts'] + 1, 21)
+            random_settings['bridge_hearts'] = random.randrange(int(random_settings['starting_hearts']) + 1, 21)
         else:
             random_settings['bridge'] = 'tokens'
     if whichtype in ['gbk', 'both']:
-        if random_settings['starting_hearts'] < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
+        if int(random_settings['starting_hearts']) < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
             random_settings['shuffle_ganon_bosskey'] = 'hearts'
-            random_settings['ganon_bosskey_hearts'] = random.randrange(random_settings['starting_hearts'] + 1, 21)
+            random_settings['ganon_bosskey_hearts'] = random.randrange(int(random_settings['starting_hearts']) + 1, 21)
         else:
             random_settings['shuffle_ganon_bosskey'] = 'tokens'
 

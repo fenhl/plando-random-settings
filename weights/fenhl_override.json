@@ -1,0 +1,65 @@
+{
+    "options": {
+        "extra_conditionals": {
+            "dynamic_heart_or_skulltula_wincon": [true, 15, "40/40/20", 50]
+        }
+    },
+    "multiselect": {
+        "key_rings": {
+            "global_enable_percentage": 20,
+            "geometric": false,
+            "opt_percentage": {
+                "Thieves Hideout": 100,
+                "Forest Temple": 100,
+                "Fire Temple": 100,
+                "Water Temple": 100,
+                "Shadow Temple": 100,
+                "Spirit Temple": 100,
+                "Bottom of the Well": 100,
+                "Gerudo Training Ground": 100,
+                "Ganons Castle": 100
+            }
+        }
+    },
+    "weights": {
+        "open_forest": {
+            "closed": 1,
+            "closed_deku": 1,
+            "open": 1
+        },
+        "require_gohma": {
+            "false": 1,
+            "true": 0
+        },
+        "plant_beans": {
+            "true": 1,
+            "false": 1
+        },
+        "owl_drops": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
+        "warp_songs": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
+        "spawn_positions": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
+        "item_pool_value": {
+            "ludicrous": 1,
+            "plentiful": 2,
+            "balanced": 9,
+            "scarce": 5,
+            "minimal": 3
+        },
+        "deadly_bonks": {
+            "true": 1,
+            "false": 19
+        }
+    }
+}
