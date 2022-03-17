@@ -29,10 +29,13 @@
         }
     },
     "weights": {
+        "open_deku": {
+            "true": 1,
+            "false": 1
+        },
         "open_forest": {
-            "closed": 1,
-            "closed_deku": 1,
-            "open": 1
+            "true": 1,
+            "false": 1
         },
         "require_gohma": {
             "false": 1,
@@ -50,6 +53,11 @@
         "shuffle_overworld_entrances": {
             "true": 0,
             "false": 1
+        },
+        "shuffle_gerudo_valley_river_exit": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
         },
         "owl_drops": {
             "full": 1,
@@ -93,13 +101,6 @@
         },
         "hint_dist": {
             "useless": 1
-        },
-        "item_pool_value": {
-            "ludicrous": 1,
-            "plentiful": 2,
-            "balanced": 9,
-            "scarce": 5,
-            "minimal": 3
         },
         "deadly_bonks": {
             "true": 1,

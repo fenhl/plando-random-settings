@@ -30,6 +30,11 @@
             "true": 1,
             "false": 1
         },
+        "shuffle_gerudo_valley_river_exit": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
         "owl_drops": {
             "full": 1,
             "balanced": 1,
