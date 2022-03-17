@@ -134,7 +134,7 @@ def shuffle_goal_hints(random_settings, **kwargs):
 
     # Roll to swap goal hints
     goals = random.choices([True, False], weights=[chance_of_goals, 100-chance_of_goals])[0]
-    if not goals or current_distro == 'useless':
+    if not goals or current_distro in ('useless', 'chaos'):
         return
 
     # Load the distro
