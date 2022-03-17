@@ -90,10 +90,17 @@
             "glitched": 0,
             "none": 0
         },
+        "open_deku": {
+            "true": 1,
+            "false": 1
+        },
         "open_forest": {
-            "open": 1,
-            "closed_deku": 1,
-            "closed": 0
+            "true": 1,
+            "false": 0
+        },
+        "require_gohma": {
+            "false": 1,
+            "true": 0
         },
         "open_kakariko": {
             "open": 8,

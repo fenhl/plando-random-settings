@@ -23,13 +23,8 @@
     },
     "weights": {
         "open_forest": {
-            "closed": 1,
-            "closed_deku": 1,
-            "open": 1
-        },
-        "require_gohma": {
             "false": 1,
-            "true": 0
+            "true": 1
         },
         "plant_beans": {
             "true": 1,
