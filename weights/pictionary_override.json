@@ -54,11 +54,6 @@
             "true": 0,
             "false": 1
         },
-        "shuffle_gerudo_valley_river_exit": {
-            "full": 1,
-            "balanced": 1,
-            "off": 2
-        },
         "owl_drops": {
             "full": 1,
             "balanced": 1,
@@ -85,11 +80,7 @@
             "false": 1
         },
         "mq_dungeons_mode": {
-            "random": 0,
-            "count": 1
-        },
-        "mq_dungeons_count": {
-            "0": 1
+            "vanilla": 1
         },
         "correct_chest_appearances": {
             "off": 1,
