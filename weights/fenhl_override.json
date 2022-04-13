@@ -30,6 +30,11 @@
             "true": 1,
             "false": 1
         },
+        "shuffle_bosses": {
+            "off": 2,
+            "limited": 1,
+            "full": 1
+        },
         "shuffle_gerudo_valley_river_exit": {
             "full": 1,
             "balanced": 1,
