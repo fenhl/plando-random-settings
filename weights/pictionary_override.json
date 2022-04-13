@@ -85,7 +85,7 @@
         "correct_chest_appearances": {
             "off": 1,
             "textures": 0,
-            "sizes": 0
+            "both": 0
         },
         "hints": {
             "none": 1

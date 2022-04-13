@@ -453,7 +453,7 @@
         "correct_chest_appearances": {
             "off": 4,
             "textures": 3,
-            "sizes": 3
+            "both": 3
         },
         "shopsanity_prices": {
             "random": 1,
