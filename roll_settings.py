@@ -5,7 +5,7 @@ import json
 import random
 import conditionals as conds
 sys.path.append("randomizer")
-from randomizer.SettingsList import get_settings_from_tab, get_setting_info
+from randomizer.SettingsList import get_settings_from_section, get_settings_from_tab, get_setting_info
 from randomizer.StartingItems import inventory, songs, equipment
 
 
@@ -203,6 +203,29 @@ def generate_plando(weights, override_weights_fname, no_seed):
         
     # Remove plando setting if a _random setting is true
     remove_plando_if_random(random_settings)
+
+    # Remove conflicting settings
+    settings_to_remove = set()
+    for setting, choice in random_settings.items():
+        info = get_setting_info(setting)
+        if info.disable != None:
+            for option, disabling in info.disable.items():
+                negative = False
+                if isinstance(option, str) and option[0] == '!':
+                    negative = True
+                    option = option[1:]
+                if (choice == option) != negative:
+                    for other_setting in disabling.get('settings', []):
+                        settings_to_remove.add(other_setting)
+                    for section in disabling.get('sections', []):
+                        for other_setting in get_settings_from_section(section):
+                            settings_to_remove.add(other_setting)
+                    for tab in disabling.get('tabs', []):
+                        for other_setting in get_settings_from_tab(tab):
+                            settings_to_remove.add(other_setting)
+    for setting_to_remove in settings_to_remove:
+        if setting_to_remove in random_settings:
+            del random_settings[setting_to_remove]
 
     # Format numbers and bools to not be strings
     for setting, value in random_settings.items():

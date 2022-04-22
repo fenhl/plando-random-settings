@@ -50,6 +50,11 @@
             "true": 1,
             "false": 1
         },
+        "shuffle_bosses": {
+            "off": 1,
+            "limited": 0,
+            "full": 0
+        },
         "shuffle_overworld_entrances": {
             "true": 0,
             "false": 1
