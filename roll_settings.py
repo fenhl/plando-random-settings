@@ -104,7 +104,7 @@ def resolve_multiselect_weights(setting, options):
 def draw_dungeon_shortcuts(random_settings):
     """ Decide how many dungeon shortcuts to enable and randomly select them """
     N = random.choices(range(8), weights=geometric_weights(8))[0]
-    dungeon_shortcuts_opts = ['deku_tree', 'dodongos_cavern', 'jabu_jabus_belly', 'forest_temple', 'fire_temple', 'shadow_temple', 'spirit_temple']
+    dungeon_shortcuts_opts = ['Deku Tree', 'Dodongos Cavern', 'Jabu Jabus Belly', 'Forest Temple', 'Fire Temple', 'Shadow Temple', 'Spirit Temple']
     random_settings["dungeon_shortcuts"] = random.sample(dungeon_shortcuts_opts, N)
 
 
