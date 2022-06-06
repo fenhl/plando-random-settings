@@ -109,7 +109,7 @@ def main():
         completed_process = tools.generate_patch_file(plando_filename=plando_filename, worldcount=worldcount, max_retries=max_rando_retries)
         if completed_process.returncode == 0:
             break
-        if i == max_retries-1 and completed_process.returncode != 0:
+        if i == max_plando_retries-1 and completed_process.returncode != 0:
             raise tools.RandomizerError(completed_process.stderr)
 
     if not no_seed:
