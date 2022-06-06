@@ -254,7 +254,6 @@ def generate_plando(weights, override_weights_fname, no_seed):
         os.mkdir("data")
     with open(os.path.join("data", plando_filename), 'w') as fp:
         json.dump(output, fp, indent=4)
-    if no_seed:
-        print(f"Plando File: {plando_filename}")
+    print(f"Plando File: {plando_filename}")
 
     return plando_filename
