@@ -30,6 +30,15 @@
             "true": 1,
             "false": 1
         },
+        "shuffle_frog_song_rupees": {
+            "false": 1,
+            "true": 1
+        },
+        "shuffle_dungeon_entrances": {
+            "off": 2,
+            "simple": 1,
+            "all": 1
+        },
         "shuffle_bosses": {
             "off": 2,
             "limited": 1,

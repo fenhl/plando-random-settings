@@ -194,8 +194,8 @@
             "false": 1
         },
         "shuffle_dungeon_entrances": {
-            "true": 1,
-            "false": 1
+            "simple": 1,
+            "off": 1
         },
         "shuffle_overworld_entrances": {
             "true": 2,

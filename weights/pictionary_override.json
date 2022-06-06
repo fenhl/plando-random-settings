@@ -50,10 +50,19 @@
             "true": 1,
             "false": 1
         },
+        "shuffle_frog_song_rupees": {
+            "false": 1,
+            "true": 1
+        },
+        "shuffle_dungeon_entrances": {
+            "off": 2,
+            "simple": 1,
+            "all": 1
+        },
         "shuffle_bosses": {
-            "off": 1,
-            "limited": 0,
-            "full": 0
+            "off": 2,
+            "limited": 1,
+            "full": 1
         },
         "shuffle_overworld_entrances": {
             "true": 0,
