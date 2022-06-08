@@ -3,6 +3,7 @@ import sys
 import datetime
 import json
 import random
+import time
 import conditionals as conds
 sys.path.append("randomizer")
 from randomizer.SettingsList import get_settings_from_section, get_settings_from_tab, get_setting_info
@@ -248,7 +249,9 @@ def generate_plando(weights, override_weights_fname, no_seed):
     output = {"settings": random_settings}
 
     plando_filename = f'random_settings_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
-    # plando_filename = f'random_settings.json'
+    while os.path.exists(os.path.join('data', plando_filename)):
+        time.sleep(0.000001)
+        plando_filename = f'random_settings_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
 
     if not os.path.isdir("data"):
         os.mkdir("data")
