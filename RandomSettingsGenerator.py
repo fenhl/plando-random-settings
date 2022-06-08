@@ -47,6 +47,7 @@ def get_command_line_args():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--no_seed", help="Suppresses the generation of a patch file.", action="store_true")
+    parser.add_argument("--keep_plandos", help="Don't delete plando files after generating patch files.", action="store_true")
     parser.add_argument("--override", help="Use the specified weights file over the default RSL weights.")
     parser.add_argument("--worldcount", help="Generate a seed with more than 1 world.")
     parser.add_argument("--check_new_settings", help="When the version updates, run with this flag to find changes to settings names or new settings.", action="store_true")
@@ -82,12 +83,12 @@ def get_command_line_args():
     if args.no_log_errors:
         LOG_ERRORS = False
 
-    return args.no_seed, worldcount, override, args.check_new_settings, max_plando_retries, max_rando_retries
+    return args.no_seed, args.keep_plandos, worldcount, override, args.check_new_settings, max_plando_retries, max_rando_retries
 
 
 def main():
     """ Roll a random settings seed """
-    no_seed, worldcount, override_weights_fname, check_new_settings, max_plando_retries, max_rando_retries = get_command_line_args()
+    no_seed, keep_plandos, worldcount, override_weights_fname, check_new_settings, max_plando_retries, max_rando_retries = get_command_line_args()
 
     # If we only want to check for new/changed settings
     if check_new_settings:
@@ -105,7 +106,8 @@ def main():
         if no_seed:
             # tools.init_randomizer_settings(plando_filename=plando_filename, worldcount=worldcount)
             break
-        plandos_to_cleanup.append(plando_filename)
+        if not keep_plandos:
+            plandos_to_cleanup.append(plando_filename)
         completed_process = tools.generate_patch_file(plando_filename=plando_filename, worldcount=worldcount, max_retries=max_rando_retries)
         if completed_process.returncode == 0:
             break
