@@ -27,12 +27,26 @@
             "true": 1
         },
         "plant_beans": {
-            "true": 1,
+            "true": 3,
+            "false": 7
+        },
+        "shuffle_base_item_pool": {
+            "true": 19,
             "false": 1
+        },
+        "shuffle_song_items": {
+            "vanilla": 1,
+            "song": 8,
+            "dungeon": 3,
+            "any": 8
         },
         "shuffle_frog_song_rupees": {
             "false": 1,
             "true": 1
+        },
+        "shuffle_hideout_entrances": {
+            "true": 1,
+            "false": 1
         },
         "shuffle_dungeon_entrances": {
             "off": 2,
@@ -40,7 +54,7 @@
             "all": 1
         },
         "shuffle_bosses": {
-            "off": 2,
+            "off": 3,
             "limited": 1,
             "full": 1
         },
@@ -82,6 +96,10 @@
         "deadly_bonks": {
             "true": 1,
             "false": 19
+        },
+        "blue_fire_arrows": {
+            "true": 3,
+            "false": 7
         }
     }
 }
