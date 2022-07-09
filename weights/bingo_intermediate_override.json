@@ -16,9 +16,9 @@
         "trials_random": {
             "true": 1
         },
-        "starting_items": [
-          "ocarina"
-        ],
+        "starting_items": {
+          "Ocarina": 1
+        },
         "trials": {
             "0": 1,
             "1": 1,

@@ -55,21 +55,22 @@ def geometric_weights(N, startat=0, rtype="list"):
         return {str(startat+i): 50.0/2**i for i in range(N)}
 
 
-def draw_starting_item_pool(random_settings, start_with):
+def draw_starting_item_pool(random_settings):
     """ Select starting items, songs, and equipment. """
-    random_settings["starting_items"] = draw_choices_from_pool(inventory)
-    random_settings["starting_songs"] = draw_choices_from_pool(songs)
-    random_settings["starting_equipment"] = draw_choices_from_pool(equipment)
+    starting_items = draw_choices_from_pool(inventory)
+    starting_songs = draw_choices_from_pool(songs)
+    starting_equipment = draw_choices_from_pool(equipment)
 
-    for key, val in start_with.items():
-        for thing in val:
-            if thing not in random_settings[key]:
-                random_settings[key] += [thing]
+    random_settings.setdefault("starting_items", {})
+    for pool in (starting_items, starting_songs, starting_equipment):
+        for item in pool:
+            random_settings["starting_items"].setdefault(item.itemname, 0)
+            random_settings["starting_items"][item.itemname] += 1
 
 
 def draw_choices_from_pool(itempool):
     N = random.choices(range(len(itempool)), weights=geometric_weights(len(itempool)))[0]
-    return random.sample(list(itempool.keys()), N)
+    return random.sample(list(itempool.values()), N)
 
 
 def remove_plando_if_random(random_settings):
@@ -121,15 +122,12 @@ def generate_plando(weights, override_weights_fname, no_seed):
 
 
     # If an override_weights file name is provided, load it
-    start_with = {"starting_items":[], "starting_songs":[], "starting_equipment":[]}
+    start_with = {}
     if override_weights_fname is not None:
         print(f"RSL GENERATOR: LOADING OVERRIDE WEIGHTS from {override_weights_fname}")
         override_options, override_multiselect, override_weights = load_weights_file(override_weights_fname)
         # Check for starting items, songs and equipment
-        for key in start_with.keys():
-            if key in override_weights.keys():
-                start_with[key] = override_weights[key]
-                override_weights.pop(key)
+        start_with = override_weights.pop("starting_items", {})
 
         # Replace the options
         if override_options is not None:
@@ -182,7 +180,7 @@ def generate_plando(weights, override_weights_fname, no_seed):
     ####################################################################################
 
     # Draw the random settings
-    random_settings = {}
+    random_settings = {"starting_items": start_with}
     for setting, options in weight_dict.items():
         random_settings[setting] = random.choices(list(options.keys()), weights=list(options.values()))[0]
 
@@ -194,13 +192,13 @@ def generate_plando(weights, override_weights_fname, no_seed):
     # Add starting items, conditionals, tricks and excluded locations
     if weight_options is not None:
         if "conditionals" in weight_options:
-            conds.parse_conditionals(weight_options["conditionals"], weight_dict, random_settings, start_with)
+            conds.parse_conditionals(weight_options["conditionals"], weight_dict, random_settings)
         if "tricks" in weight_options:
             random_settings["allowed_tricks"] = weight_options["tricks"]
         if "disabled_locations" in weight_options:
             random_settings["disabled_locations"] = weight_options["disabled_locations"]
         if "starting_items" in weight_options and weight_options["starting_items"] == True:
-            draw_starting_item_pool(random_settings, start_with)
+            draw_starting_item_pool(random_settings)
         
     # Remove plando setting if a _random setting is true
     remove_plando_if_random(random_settings)

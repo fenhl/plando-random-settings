@@ -4,11 +4,11 @@ import os
 import random
 
 
-def parse_conditionals(conditional_list, weight_dict, random_settings, extra_starting_items):
+def parse_conditionals(conditional_list, weight_dict, random_settings):
     """ Parse the conditionals in the weights file to enable/disable them """
     for cond, details in conditional_list.items():
         if details[0]:
-            eval(cond + "(random_settings, weight_dict=weight_dict, extra_starting_items=extra_starting_items, cparams=details[1:])")
+            eval(cond + "(random_settings, weight_dict=weight_dict, cparams=details[1:])")
 
 
 def triforce_count_based_on_item_pool(random_settings, **kwargs):
@@ -76,10 +76,11 @@ def restrict_one_entrance_randomizer(random_settings, **kwargs):
             random_settings[setting] = off_option
 
 
-def random_scrubs_start_wallet(random_settings, weight_dict, extra_starting_items, **kwargs):
+def random_scrubs_start_wallet(random_settings, weight_dict, **kwargs):
     """ If random scrubs is enabled, add a wallet to the extra starting items """
     if random_settings['shuffle_scrubs'] == 'random':
-        extra_starting_items['starting_equipment'] += ['wallet']
+        random_settings['starting_items'].setdefault('Progressive Wallet', 0)
+        random_settings['starting_items']['Progressive Wallet'] += 1
 
 
 def dynamic_heart_or_skulltula_wincon(random_settings, **kwargs):
