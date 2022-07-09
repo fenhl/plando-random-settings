@@ -203,6 +203,22 @@ def generate_plando(weights, override_weights_fname, no_seed):
     # Remove plando setting if a _random setting is true
     remove_plando_if_random(random_settings)
 
+    # Format numbers and bools to not be strings
+    for setting, value in random_settings.items():
+        setting_type = get_setting_info(setting).type
+        if setting_type is bool:
+            if value == "true":
+                value = True
+            elif value == "false":
+                value = False
+            else:
+                raise TypeError(f'Value for setting {setting!r} must be "true" or "false"')
+        elif setting_type is int:
+            value = int(value)
+        elif setting_type is not str and setting not in ["allowed_tricks", "disabled_locations", "starting_items", "starting_songs", "starting_equipment", "hint_dist_user", "dungeon_shortcuts"] + list(weight_multiselect.keys()):
+            raise NotImplementedError(f'{setting} has an unsupported setting type: {setting_type!r}')
+        random_settings[setting] = value
+
     # Remove conflicting settings
     settings_to_remove = set()
     for setting, choice in random_settings.items():
@@ -225,22 +241,6 @@ def generate_plando(weights, override_weights_fname, no_seed):
     for setting_to_remove in settings_to_remove:
         if setting_to_remove in random_settings:
             del random_settings[setting_to_remove]
-
-    # Format numbers and bools to not be strings
-    for setting, value in random_settings.items():
-        setting_type = get_setting_info(setting).type
-        if setting_type is bool:
-            if value == "true":
-                value = True
-            elif value == "false":
-                value = False
-            else:
-                raise TypeError(f'Value for setting {setting!r} must be "true" or "false"')
-        elif setting_type is int:
-            value = int(value)
-        elif setting_type is not str and setting not in ["allowed_tricks", "disabled_locations", "starting_items", "starting_songs", "starting_equipment", "hint_dist_user", "dungeon_shortcuts"] + list(weight_multiselect.keys()):
-            raise NotImplementedError(f'{setting} has an unsupported setting type: {setting_type!r}')
-        random_settings[setting] = value
 
 
     # Save the output plando
