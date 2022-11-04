@@ -1,31 +1,20 @@
-import decimal
+import random
 import json
 import os
-import random
+import sys
+from decimal import Decimal, ROUND_UP
 
 
-def parse_conditionals(conditional_list, weight_dict, random_settings):
+def parse_conditionals(conditional_list, weight_dict, random_settings, extra_starting_items):
     """ Parse the conditionals in the weights file to enable/disable them """
     for cond, details in conditional_list.items():
         if details[0]:
-            eval(cond + "(random_settings, weight_dict=weight_dict, cparams=details[1:])")
+            getattr(sys.modules[__name__], cond)(random_settings, weight_dict=weight_dict, extra_starting_items=extra_starting_items, cparams=details[1:])
 
 
-def triforce_count_based_on_item_pool(random_settings, **kwargs):
-    """ Emulate the behavior of the randomizer from before the triforce_count_per_world setting was added. """
-    if random_settings['triforce_hunt'] == "true":
-        random_settings['triforce_count_per_world'] = int(({
-            'ludicrous': decimal.Decimal('2'),
-            'plentiful': decimal.Decimal('2'),
-            'balanced': decimal.Decimal('1.5'),
-            'scarce': decimal.Decimal('1.25'),
-            'minimal': decimal.Decimal('1'),
-        }[random_settings['item_pool_value']] * random_settings['triforce_goal_per_world']).to_integral_value(rounding=decimal.ROUND_HALF_UP))
-    else:
-        if 'triforce_count_per_world' in random_settings:
-            del random_settings['triforce_count_per_world']
-        if 'triforce_goal_per_world' in random_settings:
-            del random_settings['triforce_goal_per_world']
+def constant_triforce_hunt_extras(random_settings, weight_dict, **kwargs):
+    """ Keep constant 25% extra Triforce Pieces for all item pools. """
+    random_settings['triforce_count_per_world'] = int(Decimal(random_settings['triforce_goal_per_world'] * 1.25).to_integral_value(rounding=ROUND_UP))
 
 
 def exclude_minimal_triforce_hunt(random_settings, weight_dict, **kwargs):
@@ -44,6 +33,14 @@ def exclude_ice_trap_misery(random_settings, weight_dict, **kwargs):
     if 'onslaught' in weights.keys() and random_settings['damage_multiplier'] in ['quadruple', 'ohko']:
         weights.pop('onslaught')
     random_settings['junk_ice_traps'] = random.choices(list(weights.keys()), weights=list(weights.values()))[0]
+
+
+def disable_pot_chest_texture_independence(random_settings, **kwargs):
+    """ Set correct_potcrate_appearances to match correct_chest_appearances. """
+    if random_settings['correct_chest_appearances'] in ['textures', 'both', 'classic']:
+        random_settings['correct_potcrate_appearances'] = 'textures'
+    else:
+        random_settings['correct_potcrate_appearances'] = 'off'
 
 
 def disable_hideoutkeys_independence(random_settings, **kwargs):
@@ -76,38 +73,10 @@ def restrict_one_entrance_randomizer(random_settings, **kwargs):
             random_settings[setting] = off_option
 
 
-def random_scrubs_start_wallet(random_settings, weight_dict, **kwargs):
+def random_scrubs_start_wallet(random_settings, weight_dict, extra_starting_items, **kwargs):
     """ If random scrubs is enabled, add a wallet to the extra starting items """
     if random_settings['shuffle_scrubs'] == 'random':
-        random_settings['starting_items'].setdefault('Progressive Wallet', 0)
-        random_settings['starting_items']['Progressive Wallet'] += 1
-
-
-def dynamic_heart_or_skulltula_wincon(random_settings, **kwargs):
-    """ Rolls heart or skull win conditions seperately. Takes extra inputs [total weight of either or both win cons being heart or skulls, "bridge%/gbk%/both", weight of hearts rather than skulls] """
-    chance_of_skull_wincon = int(kwargs['cparams'][0])
-    weights = [int(x) for x in kwargs['cparams'][1].split('/')]
-    chance_of_hearts_instead_of_skulls = int(kwargs['cparams'][2])
-
-    # Roll for a skull win condition
-    skull_wincon = random.choices([True, False], weights=[chance_of_skull_wincon, 100-chance_of_skull_wincon])[0]
-    if not skull_wincon:
-        return
-
-    # Roll for bridge/bosskey/both
-    whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
-    if whichtype in ['bridge', 'both']:
-        if int(random_settings['starting_hearts']) < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
-            random_settings['bridge'] = 'hearts'
-            random_settings['bridge_hearts'] = random.randrange(int(random_settings['starting_hearts']) + 1, 21)
-        else:
-            random_settings['bridge'] = 'tokens'
-    if whichtype in ['gbk', 'both']:
-        if int(random_settings['starting_hearts']) < 20 and random.randrange(100) < chance_of_hearts_instead_of_skulls:
-            random_settings['shuffle_ganon_bosskey'] = 'hearts'
-            random_settings['ganon_bosskey_hearts'] = random.randrange(int(random_settings['starting_hearts']) + 1, 21)
-        else:
-            random_settings['shuffle_ganon_bosskey'] = 'tokens'
+        extra_starting_items['starting_equipment'] += ['wallet']
 
 
 def dynamic_skulltula_wincon(random_settings, **kwargs):
@@ -128,6 +97,24 @@ def dynamic_skulltula_wincon(random_settings, **kwargs):
         random_settings['shuffle_ganon_bosskey'] = 'tokens'
 
 
+def dynamic_heart_wincon(random_settings, **kwargs):
+    """ Rolls heart win condition seperately. Takes extra inputs [weight of skheartull win con, "bridge%/gbk%/both"] """
+    chance_of_heart_wincon = int(kwargs['cparams'][0])
+    weights = [int(x) for x in kwargs['cparams'][1].split('/')]
+
+    # Roll for a heart win condition
+    heart_wincon = random.choices([True, False], weights=[chance_of_heart_wincon, 100-chance_of_heart_wincon])[0]
+    if not heart_wincon:
+        return
+
+    # Roll for bridge/bosskey/both
+    whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
+    if whichtype in ['bridge', 'both']:
+        random_settings['bridge'] = 'hearts'
+    if whichtype in ['gbk', 'both']:
+        random_settings['shuffle_ganon_bosskey'] = 'hearts'
+
+
 def shuffle_goal_hints(random_settings, **kwargs):
     """ Swaps Way of the Hero hints with Goal hints. Takes an extra input [how often to swap] """
     chance_of_goals = int(kwargs['cparams'][0])
@@ -135,7 +122,7 @@ def shuffle_goal_hints(random_settings, **kwargs):
 
     # Roll to swap goal hints
     goals = random.choices([True, False], weights=[chance_of_goals, 100-chance_of_goals])[0]
-    if not goals or current_distro in ('useless', 'chaos'):
+    if not goals or current_distro == 'useless':
         return
 
     # Load the distro
@@ -147,3 +134,80 @@ def shuffle_goal_hints(random_settings, **kwargs):
     distroin['distribution']['woth'] = distroin['distribution']['goal']
     distroin['distribution']['goal'] = woth
     random_settings['hint_dist_user'] = distroin
+
+
+def replace_dampe_diary_hint_with_lightarrow(random_settings, **kwargs):
+    """ Replace the dampe diary hint with a Light Arrow hint """
+    current_distro = random_settings['hint_dist']
+
+    # Load the distro and change the misc hint
+    with open(os.path.join('randomizer', 'data', 'Hints', current_distro+'.json')) as fin:
+        distroin = json.load(fin)
+    distroin['misc_hint_items'] = { 'dampe_diary': "Light Arrows" }
+    random_settings['hint_dist_user'] = distroin
+
+
+
+def split_collectible_bridge_conditions(random_settings, **kwargs):
+    """ Split heart and skulltula token bridge and ganon boss key.
+    kwargs: [how often to have a heart or skull bridge, "heart%/skull%", "bridge%/gbk%/both"]
+    """
+    chance_of_collectible_wincon = int(kwargs['cparams'][0])
+    typeweights = [int(x) for x in kwargs['cparams'][1].split('/')]
+    weights = [int(x) for x in kwargs['cparams'][2].split('/')]
+
+    # Roll for collectible win condition
+    skull_wincon = random.choices([True, False], weights=[chance_of_collectible_wincon, 100-chance_of_collectible_wincon])[0]
+    if not skull_wincon:
+        return
+
+    # Roll for hearts or skulls
+    condition = random.choices(["hearts", "tokens"], weights=typeweights)[0]
+    
+    # Roll for bridge/bosskey/both
+    whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
+    if whichtype in ['bridge', 'both']:
+        random_settings['bridge'] = condition
+    if whichtype in ['gbk', 'both']:
+        random_settings['shuffle_ganon_bosskey'] = condition
+
+
+
+def adjust_chaos_hint_distro(random_settings, **kwargs):
+    """ Duplicates the always hints in the chaos hint distro and removes
+    the double chance at each sometimes hint """
+
+    # Load the dist
+    if 'hint_dist_user' in random_settings:
+        distroin = random_settings['hint_dist_user']
+        if not distroin['name'] == "chaos":
+            print("Not using the chaos distribution, passing...")
+            return
+    else:
+        current_distro = random_settings['hint_dist']
+        if not current_distro == "chaos":
+            print("Not using the chaos distribution, passing...")
+            return
+        with open(os.path.join('randomizer', 'data', 'Hints', current_distro+'.json')) as fin:
+            distroin = json.load(fin)
+
+    # Make changes and save
+    distroin['distribution']['always']['copies'] = 2
+    distroin['distribution']['sometimes']['weight'] = 0
+    random_settings['hint_dist_user'] = distroin
+
+
+
+def exclude_mapcompass_info_remove(random_settings, weight_dict, **kwargs):
+    """ If Maps and Compai give info, do not allow them to be removed """
+    weights = weight_dict['shuffle_mapcompass']
+    if 'remove' in weights.keys() and random_settings['enhance_map_compass'] == "true":
+        weights.pop('remove')
+    random_settings['shuffle_mapcompass'] = random.choices(list(weights.keys()), weights=list(weights.values()))[0]
+
+
+
+def ohko_starts_with_nayrus(random_settings, weight_dict, extra_starting_items, **kwargs):
+    """ If one hit ko is enabled, add Nayru's Love to the starting items """
+    if random_settings['damage_multiplier'] == 'ohko':
+        extra_starting_items['starting_items'] += ['nayrus_love']

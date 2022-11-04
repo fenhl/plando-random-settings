@@ -9,7 +9,7 @@
         },
         "mq_dungeons_mode": {
             "random": 1,
-            "count": 1
+            "vanilla": 1
         },
         "useful_cutscenes": {
             "true": 1

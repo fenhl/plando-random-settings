@@ -1,27 +1,33 @@
 {
     "options": {
         "extra_conditionals": {
-            "exclude_minimal_triforce_hunt": [false],
             "exclude_ice_trap_misery": [false],
             "disable_hideoutkeys_independence": [false],
             "random_scrubs_start_wallet": [false],
-            "dynamic_heart_or_skulltula_wincon": [true, 15, "40/40/20", 50]
+            "replace_dampe_diary_hint_with_lightarrow": [false],
+            "adjust_chaos_hint_distro": [false],
+            "exclude_mapcompass_info_remove": [false],
+            "ohko_starts_with_nayrus": [false]
         }
     },
     "multiselect": {
-        "key_rings": {
-            "global_enable_percentage": 20,
+        "mix_entrance_pools": {
+            "global_enable_percentage": 50,
             "geometric": false,
             "opt_percentage": {
-                "Thieves Hideout": 100,
-                "Forest Temple": 100,
-                "Fire Temple": 100,
-                "Water Temple": 100,
-                "Shadow Temple": 100,
-                "Spirit Temple": 100,
-                "Bottom of the Well": 100,
-                "Gerudo Training Ground": 100,
-                "Ganons Castle": 100
+                "Interior": 100,
+                "GrottoGrave": 100,
+                "Dungeon": 100,
+                "Overworld": 20,
+                "Boss": 50
+            }
+        },
+        "minor_items_as_major_chest": {
+            "global_enable_percentage": 0,
+            "geometric": false,
+            "opt_percentage": {
+                "bombchus": 0,
+                "shields": 0
             }
         },
         "misc_hints": {
@@ -30,43 +36,81 @@
     },
     "weights": {
         "open_deku": {
-            "true": 1,
-            "false": 1
+            "false": 1,
+            "true": 1
         },
         "open_forest": {
-            "true": 1,
-            "false": 1
+            "false": 1,
+            "true": 1
         },
         "require_gohma": {
-            "false": 1,
-            "true": 0
+            "false": 19,
+            "true": 1
+        },
+        "triforce_hunt_mode": {
+            "normal": 19,
+            "blitz": 1
         },
         "reachable_locations": {
             "all": 1,
             "goals": 1,
             "beatable": 1
         },
-        "plant_beans": {
-            "true": 1,
+        "logic_water_gold_scale_no_entry": {
             "false": 1
         },
-        "shuffle_frog_song_rupees": {
+        "shuffle_base_item_pool": {
+            "false": 1,
+            "true": 19
+        },
+        "shuffle_dungeon_rewards": {
+            "vanilla": 1,
+            "reward": 19
+        },
+        "shuffle_song_items": {
+            "vanilla": 1,
+            "song": 7,
+            "dungeon": 4,
+            "any": 8
+        },
+        "shuffle_freestanding_items": {
+            "off": 17,
+            "all": 1,
+            "overworld": 1,
+            "dungeons": 1
+        },
+        "shuffle_pots": {
+            "off": 17,
+            "all": 1,
+            "overworld": 1,
+            "dungeons": 1
+        },
+        "shuffle_crates": {
+            "off": 17,
+            "all": 1,
+            "overworld": 1,
+            "dungeons": 1
+        },
+        "shuffle_beehives": {
             "false": 1,
             "true": 1
+        },
+        "shuffle_hideout_entrances": {
+            "true": 1,
+            "false": 1
         },
         "shuffle_dungeon_entrances": {
             "off": 2,
             "simple": 1,
             "all": 1
         },
-        "shuffle_bosses": {
-            "off": 2,
-            "limited": 1,
-            "full": 1
-        },
         "shuffle_overworld_entrances": {
-            "true": 0,
             "false": 1
+        },
+        "shuffle_gerudo_valley_river_exit": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
         },
         "owl_drops": {
             "full": 1,
@@ -78,7 +122,12 @@
             "balanced": 1,
             "off": 2
         },
-        "spawn_positions": {
+        "shuffle_child_spawn": {
+            "full": 1,
+            "balanced": 1,
+            "off": 2
+        },
+        "shuffle_adult_spawn": {
             "full": 1,
             "balanced": 1,
             "off": 2
@@ -89,27 +138,32 @@
             "any_dungeon": 1,
             "keysanity": 2
         },
+        "shuffle_silver_rupees": {
+            "remove": 2,
+            "vanilla": 2,
+            "dungeon": 2,
+            "overworld": 1,
+            "any_dungeon": 1,
+            "anywhere": 2,
+            "regional": 1
+        },
         "enhance_map_compass": {
-            "true": 0,
             "false": 1
         },
         "mq_dungeons_mode": {
             "vanilla": 1
         },
         "correct_chest_appearances": {
-            "off": 1,
-            "textures": 0,
-            "both": 0
+            "off": 1
+        },
+        "correct_potcrate_appearances": {
+            "off": 1
         },
         "hints": {
             "none": 1
         },
         "hint_dist": {
             "useless": 1
-        },
-        "deadly_bonks": {
-            "true": 1,
-            "false": 19
         }
     }
 }

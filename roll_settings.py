@@ -5,8 +5,9 @@ import json
 import random
 import time
 import conditionals as conds
+from rslversion import __version__
 sys.path.append("randomizer")
-from randomizer.SettingsList import get_settings_from_section, get_settings_from_tab, get_setting_info
+from randomizer.SettingsList import get_settings_from_tab, get_settings_from_section, get_setting_info
 from randomizer.StartingItems import inventory, songs, equipment
 
 
@@ -31,7 +32,8 @@ def generate_balanced_weights(fname="default_weights.json"):
                 list(get_settings_from_tab("other_tab")) + \
                 list(get_settings_from_tab("starting_tab"))
 
-    exclude_from_weights = ["bridge_tokens", "ganon_bosskey_tokens", "triforce_goal_per_world", "disabled_locations",
+    exclude_from_weights = ["bridge_tokens", "ganon_bosskey_tokens", "bridge_hearts", "ganon_bosskey_hearts",
+                            "triforce_goal_per_world", "triforce_count_per_world", "disabled_locations",
                             "allowed_tricks", "starting_equipment", "starting_items", "starting_songs"]
     weight_dict = {}
     for name in settings_to_randomize:
@@ -55,22 +57,21 @@ def geometric_weights(N, startat=0, rtype="list"):
         return {str(startat+i): 50.0/2**i for i in range(N)}
 
 
-def draw_starting_item_pool(random_settings):
+def draw_starting_item_pool(random_settings, start_with):
     """ Select starting items, songs, and equipment. """
-    starting_items = draw_choices_from_pool(inventory)
-    starting_songs = draw_choices_from_pool(songs)
-    starting_equipment = draw_choices_from_pool(equipment)
+    random_settings["starting_items"] = draw_choices_from_pool(inventory)
+    random_settings["starting_songs"] = draw_choices_from_pool(songs)
+    random_settings["starting_equipment"] = draw_choices_from_pool(equipment)
 
-    random_settings.setdefault("starting_items", {})
-    for pool in (starting_items, starting_songs, starting_equipment):
-        for item in pool:
-            random_settings["starting_items"].setdefault(item.itemname, 0)
-            random_settings["starting_items"][item.itemname] += 1
+    for key, val in start_with.items():
+        for thing in val:
+            if thing not in random_settings[key]:
+                random_settings[key] += [thing]
 
 
 def draw_choices_from_pool(itempool):
     N = random.choices(range(len(itempool)), weights=geometric_weights(len(itempool)))[0]
-    return random.sample(list(itempool.values()), N)
+    return random.sample(list(itempool.keys()), N)
 
 
 def remove_plando_if_random(random_settings):
@@ -80,6 +81,38 @@ def remove_plando_if_random(random_settings):
         if random_settings[setting+'_random'] == "true":
             random_settings.pop(setting)
 
+
+def remove_redundant_settings(random_settings):
+    """ Disable settings that the randomizer expects to be disabled.
+    The randomizer will reject plandos with disabled settings set to non-default values.
+    Settings are considered disabled if they are disabled in the randomizer GUI by another setting.
+    """
+    settings_list = list(random_settings.keys())
+    for setting in settings_list:
+        # As we're iterating, the setting may already have been deleted/disabled by a previous setting
+        if setting in random_settings.keys():
+            info = get_setting_info(setting)
+            choice = random_settings[setting]
+            if info.disable != None:
+                for option, disabling in info.disable.items():
+                    negative = False
+                    if isinstance(option, str) and option[0] == '!':
+                        negative = True
+                        option = option[1:]
+                    if (choice == option) != negative:
+                        for other_setting in disabling.get('settings', []):
+                            remove_disabled_setting(random_settings, other_setting)
+                        for section in disabling.get('sections', []):
+                            for other_setting in get_settings_from_section(section):
+                                remove_disabled_setting(random_settings, other_setting)
+                        for tab in disabling.get('tabs', []):
+                            for other_setting in get_settings_from_tab(tab):
+                                remove_disabled_setting(random_settings, other_setting)
+
+
+def remove_disabled_setting(random_settings, other_setting):
+    if other_setting in random_settings.keys():
+        random_settings.pop(other_setting)
 
 def resolve_multiselect_weights(setting, options):
     """ Given a multiselect weights block, resolve into the plando options. 
@@ -106,14 +139,14 @@ def resolve_multiselect_weights(setting, options):
 def draw_dungeon_shortcuts(random_settings):
     """ Decide how many dungeon shortcuts to enable and randomly select them """
     N = random.choices(range(8), weights=geometric_weights(8))[0]
-    dungeon_shortcuts_opts = ['Deku Tree', 'Dodongos Cavern', 'Jabu Jabus Belly', 'Forest Temple', 'Fire Temple', 'Shadow Temple', 'Spirit Temple']
+    dungeon_shortcuts_opts = ['deku_tree', 'dodongos_cavern', 'jabu_jabus_belly', 'forest_temple', 'fire_temple', 'shadow_temple', 'spirit_temple']
     random_settings["dungeon_shortcuts"] = random.sample(dungeon_shortcuts_opts, N)
 
 
-def generate_plando(weights, override_weights_fname, no_seed):
+def generate_weights_override(weights, override_weights_fname):
     # Load the weight dictionary
     if weights == "RSL":
-        weight_options, weight_multiselect, weight_dict = load_weights_file("rsl_season4.json")
+        weight_options, weight_multiselect, weight_dict = load_weights_file("rsl_season5.json")
     elif weights == "full-random":
         weight_options = None
         weight_dict = generate_balanced_weights(None)
@@ -122,12 +155,15 @@ def generate_plando(weights, override_weights_fname, no_seed):
 
 
     # If an override_weights file name is provided, load it
-    start_with = {}
+    start_with = {"starting_items":[], "starting_songs":[], "starting_equipment":[]}
     if override_weights_fname is not None:
         print(f"RSL GENERATOR: LOADING OVERRIDE WEIGHTS from {override_weights_fname}")
         override_options, override_multiselect, override_weights = load_weights_file(override_weights_fname)
         # Check for starting items, songs and equipment
-        start_with = override_weights.pop("starting_items", {})
+        for key in start_with.keys():
+            if key in override_weights.keys():
+                start_with[key] = override_weights[key]
+                override_weights.pop(key)
 
         # Replace the options
         if override_options is not None:
@@ -165,22 +201,31 @@ def generate_plando(weights, override_weights_fname, no_seed):
         if override_multiselect is not None:
             for key, value in override_multiselect.items():
                 weight_multiselect[key] = value
+    
+    return weight_options, weight_multiselect, weight_dict, start_with
 
+
+def generate_plando(weights, override_weights_fname, no_seed):
+    weight_options, weight_multiselect, weight_dict, start_with = generate_weights_override(weights, override_weights_fname)
 
     ####################################################################################
     # Make a new function that parses the weights file that does this stuff
     ####################################################################################
-    # Generate even weights for tokens and triforce pieces given the max value (Maybe put this into the step that loads the weights)
-    for nset in ["bridge_tokens", "ganon_bosskey_tokens", "triforce_goal_per_world"]:
-        kw = nset + "_max"
-        nmax = weight_options[kw] if kw in weight_options else 100
-        weight_dict[nset] = {i+1: 100./nmax for i in range(nmax)}
-        if kw in weight_dict:
-            weight_dict.pop(kw)
+    # Generate even weights for tokens, hearts, and triforce pieces given the max value (Maybe put this into the step that loads the weights)
+    for nset in ["bridge_tokens", "ganon_bosskey_tokens", "bridge_hearts", "ganon_bosskey_hearts", "triforce_goal_per_world", "triforce_count_per_world"]:
+        kwx = nset + "_max"
+        kwn = nset + "_min"
+        nmax = weight_options[kwx] if kwx in weight_options else 100
+        nmin = weight_options[kwn] if kwn in weight_options else 1
+        weight_dict[nset] = {i: 100./(nmax - nmin + 1) for i in range(nmin, nmax + 1)}
+        if kwx in weight_dict:
+            weight_dict.pop(kwx)
+        if kwn in weight_dict:
+            weight_dict.pop(kwn)
     ####################################################################################
 
     # Draw the random settings
-    random_settings = {"starting_items": start_with}
+    random_settings = {}
     for setting, options in weight_dict.items():
         random_settings[setting] = random.choices(list(options.keys()), weights=list(options.values()))[0]
 
@@ -192,13 +237,13 @@ def generate_plando(weights, override_weights_fname, no_seed):
     # Add starting items, conditionals, tricks and excluded locations
     if weight_options is not None:
         if "conditionals" in weight_options:
-            conds.parse_conditionals(weight_options["conditionals"], weight_dict, random_settings)
+            conds.parse_conditionals(weight_options["conditionals"], weight_dict, random_settings, start_with)
         if "tricks" in weight_options:
             random_settings["allowed_tricks"] = weight_options["tricks"]
         if "disabled_locations" in weight_options:
             random_settings["disabled_locations"] = weight_options["disabled_locations"]
         if "starting_items" in weight_options and weight_options["starting_items"] == True:
-            draw_starting_item_pool(random_settings)
+            draw_starting_item_pool(random_settings, start_with)
         
     # Remove plando setting if a _random setting is true
     remove_plando_if_random(random_settings)
@@ -219,32 +264,14 @@ def generate_plando(weights, override_weights_fname, no_seed):
             raise NotImplementedError(f'{setting} has an unsupported setting type: {setting_type!r}')
         random_settings[setting] = value
 
-    # Remove conflicting settings
-    settings_to_remove = set()
-    for setting, choice in random_settings.items():
-        info = get_setting_info(setting)
-        if info.disable != None:
-            for option, disabling in info.disable.items():
-                negative = False
-                if isinstance(option, str) and option[0] == '!':
-                    negative = True
-                    option = option[1:]
-                if (choice == option) != negative:
-                    for other_setting in disabling.get('settings', []):
-                        settings_to_remove.add(other_setting)
-                    for section in disabling.get('sections', []):
-                        for other_setting in get_settings_from_section(section):
-                            settings_to_remove.add(other_setting)
-                    for tab in disabling.get('tabs', []):
-                        for other_setting in get_settings_from_tab(tab):
-                            settings_to_remove.add(other_setting)
-    for setting_to_remove in settings_to_remove:
-        if setting_to_remove in random_settings:
-            del random_settings[setting_to_remove]
+    # Remove conflicting "dead" settings since rando won't ignore them anymore
+    remove_redundant_settings(random_settings)
 
+    # Add the RSL Script version to the plando
+    random_settings['user_message'] = f'RSL Script v{__version__}'
 
     # Save the output plando
-    output = {"settings": random_settings}
+    output = { "settings": random_settings }
 
     plando_filename = f'random_settings_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
     while os.path.exists(os.path.join('data', plando_filename)):

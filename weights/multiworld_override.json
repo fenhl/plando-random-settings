@@ -23,8 +23,8 @@
             "true": 1,
             "false": 19
         },
-        "starting_songs": {
-            "Suns Song": 1
-        }
+        "starting_songs": [
+            "suns_song"
+        ]
     }
 }
