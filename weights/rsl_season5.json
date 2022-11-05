@@ -241,9 +241,15 @@
             "true": 1,
             "false": 1
         },
-        "spawn_positions": {
-            "true": 1,
-            "false": 1
+        "shuffle_child_spawn": {
+            "off": 1,
+            "balanced": 1,
+            "full": 0
+        },
+        "shuffle_adult_spawn": {
+            "off": 1,
+            "balanced": 1,
+            "full": 0
         },
         "dungeon_shortcuts_choice": {
             "off": 0,
