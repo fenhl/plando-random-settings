@@ -1,7 +1,9 @@
 {
     "options": {
         "extra_conditionals": {
-            "disable_pot_chest_texture_independence": [true]
+            "disable_pot_chest_texture_independence": [
+                true
+            ]
         }
     },
     "multiselect": {
@@ -116,6 +118,12 @@
             "full": 1,
             "balanced": 1,
             "off": 2
+        },
+        "blue_warps": {
+            "vanilla": 1,
+            "dungeon": 1,
+            "balanced": 1,
+            "full": 1
         },
         "shuffle_silver_rupees": {
             "remove": 2,
