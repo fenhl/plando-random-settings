@@ -1,6 +1,7 @@
 {
     "options": {
         "extra_conditionals": {
+            "easter_egg_hunt_on_easter": [true],
             "exclude_ice_trap_misery": [false],
             "disable_hideoutkeys_independence": [false],
             "random_scrubs_start_wallet": [false],

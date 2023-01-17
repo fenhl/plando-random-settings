@@ -1,6 +1,9 @@
 {
     "options": {
         "extra_conditionals": {
+            "easter_egg_hunt_on_easter": [
+                true
+            ],
             "disable_pot_chest_texture_independence": [
                 true
             ]

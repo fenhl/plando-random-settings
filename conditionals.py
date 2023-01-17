@@ -2,6 +2,7 @@ import random
 import json
 import os
 import sys
+from datetime import date, datetime, timedelta
 from decimal import Decimal, ROUND_UP
 
 
@@ -10,6 +11,28 @@ def parse_conditionals(conditional_list, weight_dict, random_settings, extra_sta
     for cond, details in conditional_list.items():
         if details[0]:
             getattr(sys.modules[__name__], cond)(random_settings, weight_dict=weight_dict, extra_starting_items=extra_starting_items, cparams=details[1:])
+
+
+def easter_egg_hunt_on_easter(random_settings, **kwargs):
+    """ Replace normal Triforce Hunt with Easter Egg Hunt for weights rolled on Easter Sunday or Monday """
+    if random_settings['triforce_hunt'] == 'true' and random_settings['triforce_hunt_mode'] == 'normal':
+        today = datetime.now().date()
+        aa = today.year % 19
+        bb = today.year / 100
+        cc = today.year % 100
+        dd = bb / 4
+        ee = bb % 4
+        ff = (bb + 8) / 25
+        gg = (bb - ff + 1) / 3
+        hh = (19 * aa + bb - dd - gg + 15) % 30
+        ii = cc / 4
+        kk = cc % 4
+        ll = (32 + 2 * ee + 2 * ii - hh - kk) % 7
+        mm = (aa + 11 * hh + 22 * ll) / 451
+        month = (hh + ll - 7 * mm + 114) / 31
+        day = (hh + ll - 7 * mm + 114) % 31 + 1
+        if date(today.year, month, day) == today or date(today.year, month, day) + timedelta(days=1) == today:
+            random_settings['triforce_hunt_mode'] = 'easter_egg_hunt'
 
 
 def constant_triforce_hunt_extras(random_settings, weight_dict, **kwargs):
