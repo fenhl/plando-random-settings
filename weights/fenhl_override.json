@@ -31,9 +31,9 @@
             "geometric": false,
             "opt_percentage": {
                 "altar": 100,
+                "dampe_diary": 100,
                 "ganondorf": 100,
                 "warp_songs": 100,
-                "dampe_diary": 100,
                 "10_skulltulas": 10,
                 "20_skulltulas": 20,
                 "30_skulltulas": 30,
@@ -43,6 +43,38 @@
         }
     },
     "weights": {
+        "triforce_hunt_mode": {
+            "normal": 18,
+            "easter_egg_hunt": 0,
+            "ice_percent": 1,
+            "blitz": 1
+        },
+        "shuffle_dungeon_rewards": {
+            "vanilla": 1,
+            "reward": 14,
+            "dungeon": 1,
+            "regional": 1,
+            "overworld": 1,
+            "any_dungeon": 1,
+            "anywhere": 1
+        },
+        "keyring_give_bk": {
+            "false": 1,
+            "true": 1
+        },
+        "shuffle_silver_rupees": {
+            "remove": 2,
+            "vanilla": 2,
+            "dungeon": 2,
+            "overworld": 1,
+            "any_dungeon": 1,
+            "anywhere": 2,
+            "regional": 1
+        },
+        "silver_rupee_pouches": {
+            "false": 4,
+            "true": 1
+        },
         "open_deku": {
             "false": 1,
             "true": 1
@@ -55,22 +87,49 @@
             "false": 19,
             "true": 1
         },
-        "triforce_hunt_mode": {
-            "normal": 19,
-            "easter_egg_hunt": 0,
-            "blitz": 1
+        "shuffle_hideout_entrances": {
+            "true": 1,
+            "false": 1
         },
-        "logic_water_gold_scale_no_entry": {
-            "false": 1,
-            "true": 0
+        "shuffle_dungeon_entrances": {
+            "off": 2,
+            "simple": 1,
+            "all": 1
         },
-        "shuffle_base_item_pool": {
-            "false": 1,
-            "true": 19
+        "shuffle_gerudo_valley_river_exit": {
+            "off": 2,
+            "balanced": 1,
+            "full": 1
         },
-        "shuffle_dungeon_rewards": {
+        "owl_drops": {
+            "off": 2,
+            "balanced": 1,
+            "full": 1
+        },
+        "warp_songs": {
+            "off": 2,
+            "balanced": 1,
+            "full": 1
+        },
+        "shuffle_child_spawn": {
+            "off": 2,
+            "balanced": 1,
+            "full": 1
+        },
+        "shuffle_adult_spawn": {
+            "off": 2,
+            "balanced": 1,
+            "full": 1
+        },
+        "blue_warps": {
             "vanilla": 1,
-            "reward": 19
+            "dungeon": 1,
+            "balanced": 1,
+            "full": 1
+        },
+        "exclusive_one_ways": {
+            "false": 1,
+            "true": 1
         },
         "shuffle_song_items": {
             "vanilla": 1,
@@ -100,54 +159,13 @@
             "false": 1,
             "true": 1
         },
-        "shuffle_hideout_entrances": {
-            "true": 1,
-            "false": 1
+        "shuffle_base_item_pool": {
+            "false": 1,
+            "true": 19
         },
-        "shuffle_dungeon_entrances": {
-            "off": 2,
-            "simple": 1,
-            "all": 1
-        },
-        "shuffle_gerudo_valley_river_exit": {
-            "full": 1,
-            "balanced": 1,
-            "off": 2
-        },
-        "owl_drops": {
-            "full": 1,
-            "balanced": 1,
-            "off": 2
-        },
-        "warp_songs": {
-            "full": 1,
-            "balanced": 1,
-            "off": 2
-        },
-        "shuffle_child_spawn": {
-            "full": 1,
-            "balanced": 1,
-            "off": 2
-        },
-        "shuffle_adult_spawn": {
-            "full": 1,
-            "balanced": 1,
-            "off": 2
-        },
-        "blue_warps": {
-            "vanilla": 1,
-            "dungeon": 1,
-            "balanced": 1,
-            "full": 1
-        },
-        "shuffle_silver_rupees": {
-            "remove": 2,
-            "vanilla": 2,
-            "dungeon": 2,
-            "overworld": 1,
-            "any_dungeon": 1,
-            "anywhere": 2,
-            "regional": 1
+        "logic_water_gold_scale_no_entry": {
+            "false": 1,
+            "true": 0
         }
     }
 }
