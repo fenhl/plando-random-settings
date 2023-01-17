@@ -25,6 +25,21 @@
                 "bombchus": 0,
                 "shields": 0
             }
+        },
+        "misc_hints": {
+            "global_enable_percentage": 100,
+            "geometric": false,
+            "opt_percentage": {
+                "altar": 100,
+                "ganondorf": 100,
+                "warp_songs": 100,
+                "dampe_diary": 100,
+                "10_skulltulas": 10,
+                "20_skulltulas": 20,
+                "30_skulltulas": 30,
+                "40_skulltulas": 40,
+                "50_skulltulas": 50
+            }
         }
     },
     "weights": {
