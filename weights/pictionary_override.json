@@ -1,14 +1,27 @@
 {
     "options": {
         "extra_conditionals": {
-            "easter_egg_hunt_on_easter": [true],
-            "exclude_ice_trap_misery": [false],
-            "disable_hideoutkeys_independence": [false],
-            "random_scrubs_start_wallet": [false],
-            "replace_dampe_diary_hint_with_lightarrow": [false],
-            "adjust_chaos_hint_distro": [false],
-            "exclude_mapcompass_info_remove": [false],
-            "ohko_starts_with_nayrus": [false]
+            "easter_egg_hunt_on_easter": [
+                true
+            ],
+            "exclude_ice_trap_misery": [
+                false
+            ],
+            "disable_hideoutkeys_independence": [
+                false
+            ],
+            "random_scrubs_start_wallet": [
+                false
+            ],
+            "replace_dampe_diary_hint_with_lightarrow": [
+                false
+            ],
+            "adjust_chaos_hint_distro": [
+                false
+            ],
+            "exclude_mapcompass_info_remove": [
+                false
+            ]
         }
     },
     "multiselect": {
