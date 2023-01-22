@@ -109,6 +109,14 @@
                 "50_skulltulas": 0
             }
         },
+        "minor_items_as_major_chest": {
+            "global_enable_percentage": 100,
+            "geometric": false,
+            "opt_percentage": {
+                "shields": 0,
+                "bombchus": 0
+            }
+        },
         "adult_trade_start": {
             "global_enable_percentage": 100,
             "geometric": false,
@@ -251,12 +259,14 @@
             "false": 1
         },
         "owl_drops": {
-            "true": 1,
-            "false": 1
+            "off": 1,
+            "balanced": 1,
+            "full": 0
         },
         "warp_songs": {
-            "true": 1,
-            "false": 1
+            "off": 1,
+            "balanced": 1,
+            "full": 0
         },
         "shuffle_child_spawn": {
             "off": 1,
@@ -668,10 +678,6 @@
         "fix_broken_drops": {
             "true": 1,
             "false": 0
-        },
-        "minor_items_as_major_chest": {
-            "true": 0,
-            "false": 1
         },
         "starting_hearts": {
             "3": 131072,
