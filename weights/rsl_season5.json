@@ -133,9 +133,12 @@
             "none": 0
         },
         "open_forest": {
-            "open": 1,
-            "closed_deku": 1,
-            "closed": 0
+            "false": 0,
+            "true": 1
+        },
+        "open_deku": {
+            "false": 1,
+            "true": 1
         },
         "open_kakariko": {
             "open": 8,
