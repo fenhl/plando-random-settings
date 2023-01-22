@@ -85,6 +85,15 @@
                 "Overworld": 20
             }
         },
+        "ocarina_songs": {
+            "global_enable_percentage": 0,
+            "geometric": false,
+            "opt_percentage": {
+                "frog": 0,
+                "warp": 0,
+                "frogs2": 0
+            }
+        },
         "misc_hints": {
             "global_enable_percentage": 100,
             "geometric": false,
@@ -507,12 +516,6 @@
             "8": 1,
             "9": 1,
             "10": 1
-        },
-        "ocarina_songs": {
-            "off": 1,
-            "frog": 0,
-            "warp": 0,
-            "all": 0
         },
         "correct_chest_appearances": {
             "off": 4,
