@@ -54,6 +54,7 @@ def get_command_line_args():
     parser.add_argument("--keep_plandos", help="Don't delete plando files after generating patch files.", action="store_true")
     parser.add_argument("--override", help="Use the specified weights file over the default RSL weights.")
     parser.add_argument("--worldcount", help="Generate a seed with more than 1 world.")
+    parser.add_argument("--per_world_settings", help="Generate settings separately for each world.", action="store_true")
     parser.add_argument("--check_new_settings", help="When the version updates, run with this flag to find changes to settings names or new settings.", action="store_true")
     parser.add_argument("--no_log_errors", help="Only show errors in the console, don't log them to a file.", action="store_true")
     parser.add_argument("--max_plando_retries", help="Try at most this many settings plandos. Defaults to 5.")
@@ -93,12 +94,12 @@ def get_command_line_args():
     if args.stress_test is not None:
         seed_count = int(args.stress_test)
 
-    return args.no_seed, args.keep_plandos, worldcount, override, args.check_new_settings, max_plando_retries, max_rando_retries, seed_count, args.benchmark
+    return args.no_seed, args.keep_plandos, worldcount, args.per_world_settings, override, args.check_new_settings, max_plando_retries, max_rando_retries, seed_count, args.benchmark
 
 
 def main():
     """ Roll a random settings seed """
-    no_seed, keep_plandos, worldcount, override_weights_fname, check_new_settings, max_plando_retries, max_rando_retries, seed_count, benchmark = get_command_line_args()
+    no_seed, keep_plandos, worldcount, per_world_settings, override_weights_fname, check_new_settings, max_plando_retries, max_rando_retries, seed_count, benchmark = get_command_line_args()
 
     # If we only want to check for new/changed settings
     if check_new_settings:
@@ -122,7 +123,7 @@ def main():
 
         plandos_to_cleanup = []
         for i in range(max_plando_retries):
-            plando_filename = rs.generate_plando(WEIGHTS, override_weights_fname, no_seed)
+            plando_filename = rs.generate_plando(WEIGHTS, override_weights_fname, no_seed, worldcount if per_world_settings else 1)
             if no_seed:
                 # tools.init_randomizer_settings(plando_filename=plando_filename, worldcount=worldcount)
                 break

@@ -204,8 +204,28 @@ def generate_weights_override(weights, override_weights_fname):
     
     return weight_options, weight_multiselect, weight_dict, start_with
 
+def generate_plando(weights, override_weights_fname, no_seed, worldcount):
+    if worldcount == 1:
+        output = {'settings': generate_plando_inner(weights, override_weights_fname)}
+    else:
+        output = {'settings': {f'World {i + 1}': generate_plando_inner(weights, override_weights_fname) for i in range(worldcount)}}
 
-def generate_plando(weights, override_weights_fname, no_seed):
+    # Save the output plando
+    plando_filename = f'random_settings_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
+    while os.path.exists(os.path.join('data', plando_filename)):
+        time.sleep(0.000001)
+        plando_filename = f'random_settings_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
+
+    if not os.path.isdir("data"):
+        os.mkdir("data")
+    with open(os.path.join("data", plando_filename), 'w') as fp:
+        json.dump(output, fp, indent=4)
+    print(f"Plando File: {plando_filename}")
+
+    return plando_filename
+
+
+def generate_plando_inner(weights, override_weights_fname):
     weight_options, weight_multiselect, weight_dict, start_with = generate_weights_override(weights, override_weights_fname)
 
     ####################################################################################
@@ -270,18 +290,4 @@ def generate_plando(weights, override_weights_fname, no_seed):
     # Add the RSL Script version to the plando
     random_settings['user_message'] = f'RSL Script v{__version__}'
 
-    # Save the output plando
-    output = { "settings": random_settings }
-
-    plando_filename = f'random_settings_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
-    while os.path.exists(os.path.join('data', plando_filename)):
-        time.sleep(0.000001)
-        plando_filename = f'random_settings_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
-
-    if not os.path.isdir("data"):
-        os.mkdir("data")
-    with open(os.path.join("data", plando_filename), 'w') as fp:
-        json.dump(output, fp, indent=4)
-    print(f"Plando File: {plando_filename}")
-
-    return plando_filename
+    return random_settings
