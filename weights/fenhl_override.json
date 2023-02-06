@@ -91,6 +91,11 @@
             "false": 19,
             "true": 1
         },
+        "starting_age": {
+            "child": 1,
+            "adult": 1,
+            "random": 0
+        },
         "shuffle_hideout_entrances": {
             "true": 1,
             "false": 1

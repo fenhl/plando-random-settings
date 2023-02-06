@@ -131,6 +131,11 @@
             "false": 19,
             "true": 1
         },
+        "starting_age": {
+            "child": 1,
+            "adult": 1,
+            "random": 0
+        },
         "mq_dungeons_mode": {
             "vanilla": 1,
             "mq": 0,
