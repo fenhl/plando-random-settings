@@ -56,6 +56,23 @@
         "disabled_locations": []
     },
     "multiselect": {
+        "shuffle_child_trade": {
+            "global_enable_percentage": 100,
+            "geometric": false,
+            "opt_percentage": {
+                "Weird Egg": 50,
+                "Chicken": 50,
+                "Zeldas Letter": 50,
+                "Keaton Mask": 50,
+                "Skull Mask": 50,
+                "Spooky Mask": 50,
+                "Bunny Hood": 50,
+                "Goron Mask": 50,
+                "Zora Mask": 50,
+                "Gerudo Mask": 50,
+                "Mask of Truth": 50
+            }
+        },
         "key_rings": {
             "global_enable_percentage": 20,
             "geometric": false,
@@ -75,25 +92,6 @@
             "global_enable_percentage": 100,
             "geometric": true
         },
-        "mix_entrance_pools": {
-            "global_enable_percentage": 50,
-            "geometric": false,
-            "opt_percentage": {
-                "Interior": 100,
-                "GrottoGrave": 100,
-                "Dungeon": 100,
-                "Overworld": 20
-            }
-        },
-        "ocarina_songs": {
-            "global_enable_percentage": 0,
-            "geometric": false,
-            "opt_percentage": {
-                "frog": 0,
-                "warp": 0,
-                "frogs2": 0
-            }
-        },
         "misc_hints": {
             "global_enable_percentage": 100,
             "geometric": false,
@@ -109,28 +107,28 @@
                 "50_skulltulas": 0
             }
         },
-        "minor_items_as_major_chest": {
-            "global_enable_percentage": 100,
-            "geometric": false,
-            "opt_percentage": {
-                "shields": 0,
-                "bombchus": 0
-            }
-        },
         "adult_trade_start": {
             "global_enable_percentage": 100,
             "geometric": false,
             "opt_percentage": {
-                "Pocket Egg": 100,
-                "Pocket Cucco": 100,
-                "Cojiro": 100,
-                "Odd Mushroom": 100,
-                "Poachers Saw": 100,
-                "Broken Sword": 100,
-                "Prescription": 100,
-                "Eyeball Frog": 100,
-                "Eyedrops": 100,
-                "Claim Check": 100
+                "Pocket Egg": 50,
+                "Pocket Cucco": 50,
+                "Cojiro": 50,
+                "Odd Mushroom": 50,
+                "Poachers Saw": 50,
+                "Broken Sword": 50,
+                "Prescription": 50,
+                "Eyeball Frog": 50,
+                "Eyedrops": 50,
+                "Claim Check": 50
+            }
+        },
+        "spawn_positions": {
+            "global_enable_percentage": 50,
+            "geometric": false,
+            "opt_percentage": {
+                "child": 100,
+                "adult": 100
             }
         }
     },
@@ -141,12 +139,9 @@
             "none": 0
         },
         "open_forest": {
-            "false": 0,
-            "true": 1
-        },
-        "open_deku": {
-            "false": 1,
-            "true": 1
+            "open": 1,
+            "closed_deku": 1,
+            "closed": 0
         },
         "open_kakariko": {
             "open": 8,
@@ -205,7 +200,7 @@
             "true": 3,
             "false": 17
         },
-        "bombchus_in_logic": {
+        "free_bombchu_drops": {
             "true": 1,
             "false": 1
         },
@@ -254,29 +249,13 @@
             "true": 3,
             "false": 7
         },
-        "decouple_entrances": {
-            "true": 0,
+        "owl_drops": {
+            "true": 1,
             "false": 1
         },
-        "owl_drops": {
-            "off": 1,
-            "balanced": 1,
-            "full": 0
-        },
         "warp_songs": {
-            "off": 1,
-            "balanced": 1,
-            "full": 0
-        },
-        "shuffle_child_spawn": {
-            "off": 1,
-            "balanced": 1,
-            "full": 0
-        },
-        "shuffle_adult_spawn": {
-            "off": 1,
-            "balanced": 1,
-            "full": 0
+            "true": 1,
+            "false": 1
         },
         "dungeon_shortcuts_choice": {
             "off": 0,
@@ -355,11 +334,6 @@
             "true": 1,
             "false": 1
         },
-        "shuffle_child_trade": {
-            "vanilla": 1,
-            "shuffle": 1,
-            "skip_child_zelda": 2
-        },
         "shuffle_gerudo_card": {
             "true": 1,
             "false": 1
@@ -368,7 +342,7 @@
             "true": 1,
             "false": 1
         },
-        "shuffle_medigoron_carpet_salesman": {
+        "shuffle_expensive_merchants": {
             "true": 2,
             "false": 3
         },
@@ -530,6 +504,12 @@
             "9": 1,
             "10": 1
         },
+        "ocarina_songs": {
+            "off": 1,
+            "frog": 0,
+            "warp": 0,
+            "all": 0
+        },
         "correct_chest_appearances": {
             "off": 4,
             "textures": 3,
@@ -679,6 +659,10 @@
             "true": 1,
             "false": 0
         },
+        "minor_items_as_major_chest": {
+            "true": 0,
+            "false": 1
+        },
         "starting_hearts": {
             "3": 131072,
             "4": 65536,
@@ -698,6 +682,10 @@
             "18": 4,
             "19": 2,
             "20": 1
+        },
+        "adult_trade_shuffle": {
+            "true": 1,
+            "false": 1
         }
     }
 }

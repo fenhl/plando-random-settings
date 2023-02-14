@@ -36,7 +36,7 @@ def download_randomizer():
         os.remove(zippath)
 
     # Download the zipped randomizer
-    req = requests.get(f'https://github.com/fenhl/OoT-Randomizer/archive/{randomizer_commit}.zip', stream=True)
+    req = requests.get(f'https://github.com/TestRunnerSRL/OoT-Randomizer/archive/{randomizer_commit}.zip', stream=True)
     with open(zippath, 'wb') as fin:
         for chunk in req.iter_content():
             fin.write(chunk)

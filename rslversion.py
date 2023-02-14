@@ -1,4 +1,4 @@
-__version__ = "2.3.8 Fenhl-14"
+__version__ = "2.3.8 TestRunnerSRL-1"
 
-randomizer_version = '7.1.43 Fenhl-5'
-randomizer_commit = 'ff5ba67fc1e66304332b0e8e5d43ba95c0231b4e'
+randomizer_version = '7.1.49 f.LUM'
+randomizer_commit = 'da94d090bd04fd29ea6bad4a957d3d2f854fea5f'

@@ -54,7 +54,6 @@ def get_command_line_args():
     parser.add_argument("--keep_plandos", help="Don't delete plando files after generating patch files.", action="store_true")
     parser.add_argument("--override", help="Use the specified weights file over the default RSL weights.")
     parser.add_argument("--worldcount", help="Generate a seed with more than 1 world.")
-    parser.add_argument("--per_world_settings", help="Generate settings separately for each world.", action="store_true")
     parser.add_argument("--check_new_settings", help="When the version updates, run with this flag to find changes to settings names or new settings.", action="store_true")
     parser.add_argument("--no_log_errors", help="Only show errors in the console, don't log them to a file.", action="store_true")
     parser.add_argument("--max_plando_retries", help="Try at most this many settings plandos. Defaults to 5.")
@@ -94,7 +93,7 @@ def get_command_line_args():
     if args.stress_test is not None:
         seed_count = int(args.stress_test)
 
-    return args.no_seed, args.keep_plandos, worldcount, args.per_world_settings, override, args.check_new_settings, max_plando_retries, max_rando_retries, seed_count, args.benchmark
+    return args.no_seed, args.keep_plandos, worldcount, False, override, args.check_new_settings, max_plando_retries, max_rando_retries, seed_count, args.benchmark
 
 
 def main():
