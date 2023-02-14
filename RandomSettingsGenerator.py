@@ -13,18 +13,6 @@ import roll_settings as rs
 
 LOG_ERRORS = True
 
-# Please set the weights file you with to load
-WEIGHTS = "RSL" # The default Random Settings League Season 5 weights
-# Every setting with even weights
-# WEIGHTS = "full-random"
-# Provide your own weights file. If the specified file does not exist, this will create it
-# WEIGHTS = "my_weights.json"
-
-# global_override_fname = "multiworld_override.json"
-# global_override_fname = "ddr_override.json"
-# global_override_fname = "beginner_override.json"
-# global_override_fname = "coop_override.json"
-
 
 # Handle all uncaught exceptions with logging
 def error_handler(errortype, value, trace):
@@ -60,18 +48,15 @@ def get_command_line_args():
     parser.add_argument("--max_rando_retries", help="Try at most this many randomizer runs per settings plando. Defaults to 3.")
     parser.add_argument("--stress_test", help="Generate the specified number of seeds.")
     parser.add_argument("--benchmark", help="Compare the specified weights file to spoiler log empirical data.", action="store_true")
+    parser.add_argument("--full_random", help="Allow every setting with even weights.", action="store_true")
 
     args = parser.parse_args()
 
     # Parse weights override file
     if args.override is not None:
-        if "global_override_fname" in globals():
-            raise RuntimeError("RSL GENERATOR ERROR: OVERRIDE PROVIDED AS GLOBAL AND VIA COMMAND LINE.")
         if not os.path.isfile(os.path.join("weights", args.override)):
             raise FileNotFoundError("RSL GENERATOR ERROR: CANNOT FIND SPECIFIED OVERRIDE FILE IN DIRECTORY: weights")
         override = args.override
-    elif "global_override_fname" in globals():
-        override = global_override_fname
     else:
         override = None
 
@@ -93,12 +78,16 @@ def get_command_line_args():
     if args.stress_test is not None:
         seed_count = int(args.stress_test)
 
-    return args.no_seed, args.keep_plandos, worldcount, False, override, args.check_new_settings, max_plando_retries, max_rando_retries, seed_count, args.benchmark
+    weights = 'RSL'
+    if args.full_random:
+        weights = 'full-random'
+
+    return weights, args.no_seed, args.keep_plandos, worldcount, False, override, args.check_new_settings, max_plando_retries, max_rando_retries, seed_count, args.benchmark
 
 
 def main():
     """ Roll a random settings seed """
-    no_seed, keep_plandos, worldcount, per_world_settings, override_weights_fname, check_new_settings, max_plando_retries, max_rando_retries, seed_count, benchmark = get_command_line_args()
+    weights, no_seed, keep_plandos, worldcount, per_world_settings, override_weights_fname, check_new_settings, max_plando_retries, max_rando_retries, seed_count, benchmark = get_command_line_args()
 
     # If we only want to check for new/changed settings
     if check_new_settings:
@@ -108,7 +97,7 @@ def main():
 
     # If we only want to benchmark weights
     if benchmark:
-        weight_options, weight_multiselect, weight_dict, start_with = rs.generate_weights_override(WEIGHTS, override_weights_fname)
+        weight_options, weight_multiselect, weight_dict, start_with = rs.generate_weights_override(weights, override_weights_fname)
         tools.benchmark_weights(weight_options, weight_dict, weight_multiselect)
         return
 
@@ -122,7 +111,7 @@ def main():
 
         plandos_to_cleanup = []
         for i in range(max_plando_retries):
-            plando_filename = rs.generate_plando(WEIGHTS, override_weights_fname, no_seed, worldcount if per_world_settings else 1)
+            plando_filename = rs.generate_plando(weights, override_weights_fname, no_seed, worldcount if per_world_settings else 1)
             if no_seed:
                 # tools.init_randomizer_settings(plando_filename=plando_filename, worldcount=worldcount)
                 break
