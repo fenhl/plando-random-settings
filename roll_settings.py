@@ -8,7 +8,7 @@ import conditionals as conds
 from rslversion import __version__
 sys.path.append("randomizer")
 from randomizer.ItemPool import trade_items, child_trade_items
-from randomizer.SettingsList import get_settings_from_tab, get_settings_from_section, get_setting_info
+from randomizer.SettingsList import get_settings_from_tab, get_settings_from_section, get_setting_info, si_dict
 from randomizer.StartingItems import inventory, songs, equipment
 
 
@@ -28,26 +28,42 @@ def load_weights_file(weights_fname):
 
 def generate_balanced_weights(fname="default_weights.json"):
     """ Generate a file with even weights for each setting. """
-    settings_to_randomize = list(get_settings_from_tab("main_tab"))[1:] + \
-                list(get_settings_from_tab("detailed_tab")) + \
-                list(get_settings_from_tab("other_tab")) + \
-                list(get_settings_from_tab("starting_tab"))
+    settings_to_randomize = [name for name, setting in si_dict.items() if setting.shared]
 
-    exclude_from_weights = ["bridge_tokens", "ganon_bosskey_tokens", "bridge_hearts", "ganon_bosskey_hearts",
-                            "triforce_goal_per_world", "triforce_count_per_world", "disabled_locations",
-                            "allowed_tricks", "starting_equipment", "starting_items", "starting_songs"]
+    exclude_from_weights = [
+        "world_count",
+        "show_seed_info",
+        "user_message",
+        "hint_dist_user",
+        "item_hints",
+        "disabled_locations",
+        "allowed_tricks",
+        "starting_equipment",
+        "starting_items",
+        "starting_songs",
+    ]
+    weight_multiselect = {}
     weight_dict = {}
     for name in settings_to_randomize:
         if name not in exclude_from_weights:
-            opts = list(get_setting_info(name).choices.keys())
-            optsdict = {o: 100./len(opts) for o in opts}
-            weight_dict[name] = optsdict
+            setting = get_setting_info(name)
+            opts = list(setting.choices.keys())
+            if setting.gui_type == 'MultipleSelect':
+                optsdict = {
+                    'global_enable_percentage': 100,
+                    'geometric': False,
+                    'opt_percentage': {o: 50 for o in opts},
+                }
+                weight_multiselect[name] = optsdict
+            else:
+                optsdict = {o: 1 for o in opts}
+                weight_dict[name] = optsdict
 
     if fname is not None:
         with open(fname, 'w') as fp:
             json.dump(weight_dict, fp, indent=4)
 
-    return weight_dict
+    return weight_multiselect, weight_dict
 
 
 def geometric_weights(N, startat=0, rtype="list"):
@@ -154,8 +170,8 @@ def generate_weights_override(weights, override_weights_fname):
     if weights == "RSL":
         weight_options, weight_multiselect, weight_dict = load_weights_file("rsl_season5.json")
     elif weights == "full-random":
-        weight_options = None
-        weight_dict = generate_balanced_weights(None)
+        weight_options = {}
+        weight_multiselect, weight_dict = generate_balanced_weights(None)
     else:
         weight_options, weight_multiselect, weight_dict = load_weights_file(weights)
 
@@ -270,7 +286,11 @@ def generate_plando_inner(weights, override_weights_fname):
             random_settings["disabled_locations"] = weight_options["disabled_locations"]
         if "starting_items" in weight_options and weight_options["starting_items"] == True:
             draw_starting_item_pool(random_settings, start_with)
-        
+
+    # Don't require more Triforce pieces than placed
+    if "triforce_count_per_world" in random_settings and "triforce_goal_per_world" in random_settings and random_settings["triforce_count_per_world"] < random_settings["triforce_goal_per_world"]:
+        random_settings["triforce_goal_per_world"], random_settings["triforce_count_per_world"] = random_settings["triforce_count_per_world"], random_settings["triforce_goal_per_world"]
+
     # Remove plando setting if a _random setting is true
     remove_plando_if_random(random_settings)
 
@@ -278,9 +298,9 @@ def generate_plando_inner(weights, override_weights_fname):
     for setting, value in random_settings.items():
         setting_type = get_setting_info(setting).type
         if setting_type is bool:
-            if value == "true":
+            if value in ("true", True):
                 value = True
-            elif value == "false":
+            elif value in ("false", False):
                 value = False
             else:
                 raise TypeError(f'Value for setting {setting!r} must be "true" or "false"')

@@ -92,7 +92,7 @@ def main():
     # If we only want to check for new/changed settings
     if check_new_settings:
         _, _, rslweights = rs.load_weights_file("rsl_season5.json")
-        tools.check_for_setting_changes(rslweights, rs.generate_balanced_weights(None))
+        tools.check_for_setting_changes(rslweights, rs.generate_balanced_weights(None)[1])
         return
 
     # If we only want to benchmark weights
