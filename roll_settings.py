@@ -254,12 +254,12 @@ def generate_plando_inner(weights, override_weights_fname):
     # Make a new function that parses the weights file that does this stuff
     ####################################################################################
     # Generate even weights for tokens, hearts, and triforce pieces given the max value (Maybe put this into the step that loads the weights)
-    for nset in ["bridge_tokens", "ganon_bosskey_tokens", "bridge_hearts", "ganon_bosskey_hearts", "triforce_goal_per_world", "triforce_count_per_world"]:
+    for nset in ["bridge_tokens", "ganon_bosskey_tokens", "lacs_tokens", "bridge_hearts", "ganon_bosskey_hearts", "lacs_hearts", "triforce_goal_per_world", "triforce_count_per_world"]:
         kwx = nset + "_max"
         kwn = nset + "_min"
-        nmax = weight_options[kwx] if kwx in weight_options else 100
-        nmin = weight_options[kwn] if kwn in weight_options else 1
-        weight_dict[nset] = {i: 100./(nmax - nmin + 1) for i in range(nmin, nmax + 1)}
+        nmax = weight_options[kwx] if kwx in weight_options else (20 if nset.endswith('_hearts') else 100)
+        nmin = weight_options[kwn] if kwn in weight_options else (4 if nset.endswith('_hearts') else 1)
+        weight_dict[nset] = {i: 1 for i in range(nmin, nmax + 1)}
         if kwx in weight_dict:
             weight_dict.pop(kwx)
         if kwn in weight_dict:
