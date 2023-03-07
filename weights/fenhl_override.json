@@ -1,11 +1,17 @@
 {
     "options": {
         "extra_conditionals": {
+            "random_shop_prices": [
+                true
+            ],
             "easter_egg_hunt_on_easter": [
                 true
             ],
             "disable_pot_chest_texture_independence": [
                 true
+            ],
+            "replicate_old_child_trade": [
+                false
             ]
         }
     },
@@ -29,6 +35,40 @@
                 "shields": 0
             }
         },
+        "shuffle_child_trade": {
+            "global_enable_percentage": 100,
+            "geometric": false,
+            "opt_percentage": {
+                "Weird Egg": 50,
+                "Chicken": 50,
+                "Zeldas Letter": 50,
+                "Keaton Mask": 50,
+                "Skull Mask": 50,
+                "Spooky Mask": 50,
+                "Bunny Hood": 50,
+                "Goron Mask": 50,
+                "Zora Mask": 50,
+                "Gerudo Mask": 50,
+                "Mask of Truth": 50
+            }
+        },
+        "adult_trade_start": {
+            "global_enable_percentage": 100,
+            "geometric": false,
+            "opt_percentage": {
+                "Pocket Egg": 100,
+                "Pocket Cucco": 100,
+                "Cojiro": 100,
+                "Odd Mushroom": 100,
+                "Odd Potion": 100,
+                "Poachers Saw": 100,
+                "Broken Sword": 100,
+                "Prescription": 100,
+                "Eyeball Frog": 100,
+                "Eyedrops": 100,
+                "Claim Check": 100
+            }
+        },
         "misc_hints": {
             "global_enable_percentage": 100,
             "geometric": false,
@@ -42,7 +82,8 @@
                 "30_skulltulas": 30,
                 "40_skulltulas": 40,
                 "50_skulltulas": 50,
-                "frogs2": 0
+                "frogs2": 0,
+                "mask_shop": 50
             }
         }
     },
@@ -140,6 +181,10 @@
             "false": 1,
             "true": 1
         },
+        "dungeon_back_access": {
+            "false": 1,
+            "true": 0
+        },
         "shuffle_song_items": {
             "vanilla": 1,
             "song": 7,
@@ -175,6 +220,14 @@
         "logic_water_gold_scale_no_entry": {
             "false": 1,
             "true": 0
+        },
+        "clearer_item_models": {
+            "false": 1,
+            "true": 1
+        },
+        "adult_trade_shuffle": {
+            "true": 1,
+            "false": 1
         }
     }
 }

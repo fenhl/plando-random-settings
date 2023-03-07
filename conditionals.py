@@ -35,6 +35,14 @@ def easter_egg_hunt_on_easter(random_settings, **kwargs):
             random_settings['triforce_hunt_mode'] = 'easter_egg_hunt'
 
 
+def random_shop_prices(random_settings, **kwargs):
+    """ Set random minimum and maximum shop prices. """
+    price1 = random.randrange(0, 105, 5)
+    price2 = random.randrange(0, 755, 5)
+    random_settings['special_deal_price_min'] = min(price1, price2)
+    random_settings['special_deal_price_max'] = max(price1, price2)
+
+
 def constant_triforce_hunt_extras(random_settings, weight_dict, **kwargs):
     """ Keep constant 25% extra Triforce Pieces for all item pools. """
     random_settings['triforce_count_per_world'] = int(Decimal(random_settings['triforce_goal_per_world'] * 1.25).to_integral_value(rounding=ROUND_UP))
@@ -234,3 +242,35 @@ def ohko_starts_with_nayrus(random_settings, weight_dict, extra_starting_items, 
     """ If one hit ko is enabled, add Nayru's Love to the starting items """
     if random_settings['damage_multiplier'] == 'ohko':
         extra_starting_items['starting_items'] += ['nayrus_love']
+
+def invert_dungeons_mq_count(random_settings, weight_dict, **kwargs):
+    """ When activated will invert the MQ dungeons count
+        kwargs: [chance of having the MQ count inverted]
+    """
+    if random_settings['mq_dungeons_mode'] != 'count':
+        return
+
+    chance_of_inverting_mq_count = int(kwargs['cparams'][0])
+    invert_mq_count = random.choices([True, False], weights=[chance_of_inverting_mq_count, 100-chance_of_inverting_mq_count])[0]
+
+    if not invert_mq_count:
+        return
+    
+    current_mq_dungeons_count = int(random_settings['mq_dungeons_count'])
+    new_mq_dungeons_count = 12 - current_mq_dungeons_count
+    
+    random_settings['mq_dungeons_count'] = new_mq_dungeons_count
+
+
+def replicate_old_child_trade(random_settings, extra_starting_items, **kwargs):
+    """ Emulate old behavior for sstarting child trade. This should be removed
+        once season 6 begins and is only here to keep season 5 support.
+    """
+    ctrade = random.choices(["vanilla", "shuffle", "scz"], weights=[1,1,2])[0]
+    if ctrade == "vanilla":
+        random_settings["shuffle_child_trade"] = []
+    elif ctrade == "shuffle":
+        random_settings["shuffle_child_trade"] = ["Weird Egg"]
+    else:
+        random_settings["shuffle_child_trade"] = []
+        extra_starting_items['starting_items'] += ["zeldas_letter"]

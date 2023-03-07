@@ -1,6 +1,9 @@
 {
     "options": {
         "extra_conditionals": {
+            "random_shop_prices": [
+                true
+            ],
             "easter_egg_hunt_on_easter": [
                 true
             ],
@@ -20,6 +23,9 @@
                 false
             ],
             "exclude_mapcompass_info_remove": [
+                false
+            ],
+            "replicate_old_child_trade": [
                 false
             ]
         }
@@ -56,7 +62,9 @@
                 "20_skulltulas": 0,
                 "30_skulltulas": 0,
                 "40_skulltulas": 0,
-                "50_skulltulas": 0
+                "50_skulltulas": 0,
+                "frogs2": 0,
+                "mask_shop": 0
             }
         }
     },
@@ -191,6 +199,10 @@
             "false": 1,
             "true": 1
         },
+        "dungeon_back_access": {
+            "false": 1,
+            "true": 0
+        },
         "shuffle_song_items": {
             "vanilla": 1,
             "song": 7,
@@ -220,6 +232,10 @@
             "textures_content": 0,
             "textures_unchecked": 0
         },
+        "clearer_item_models": {
+            "false": 0,
+            "true": 1
+        },
         "hints": {
             "none": 1,
             "mask": 0,
@@ -228,6 +244,10 @@
         },
         "hint_dist": {
             "useless": 1
+        },
+        "adult_trade_shuffle": {
+            "true": 1,
+            "false": 1
         }
     }
 }
