@@ -9,8 +9,11 @@ sys.path.append("randomizer")
 from randomizer import SettingsList
 
 def sorted_weights(weights):
-    sorted_keys = [setting_name for setting_name in SettingsList.si_dict if setting_name in weights['weights']]
-    return {**weights, 'weights': {setting_name: weights['weights'][setting_name] for setting_name in sorted_keys}}
+    return {
+        **weights,
+        'multiselect': {setting_name: weights['multiselect'][setting_name] for setting_name in SettingsList.si_dict if setting_name in weights['multiselect']},
+        'weights': {setting_name: weights['weights'][setting_name] for setting_name in SettingsList.si_dict if setting_name in weights['weights']},
+    }
 
 if __name__ == '__main__':
     for override_name in ('fenhl', 'pictionary'):

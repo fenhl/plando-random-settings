@@ -16,6 +16,34 @@
         }
     },
     "multiselect": {
+        "silver_rupee_pouches": {
+            "global_enable_percentage": 80,
+            "geometric": false,
+            "opt_percentage": {
+                "Dodongos Cavern Staircase": 100,
+                "Ice Cavern Spinning Scythe": 100,
+                "Ice Cavern Push Block": 100,
+                "Bottom of the Well Basement": 100,
+                "Shadow Temple Scythe Shortcut": 100,
+                "Shadow Temple Invisible Blades": 100,
+                "Shadow Temple Huge Pit": 100,
+                "Shadow Temple Invisible Spikes": 100,
+                "Gerudo Training Ground Slopes": 100,
+                "Gerudo Training Ground Lava": 100,
+                "Gerudo Training Ground Water": 100,
+                "Spirit Temple Child Early Torches": 100,
+                "Spirit Temple Adult Boulders": 100,
+                "Spirit Temple Lobby and Lower Adult": 100,
+                "Spirit Temple Sun Block": 100,
+                "Spirit Temple Adult Climb": 100,
+                "Ganons Castle Spirit Trial": 100,
+                "Ganons Castle Light Trial": 100,
+                "Ganons Castle Fire Trial": 100,
+                "Ganons Castle Shadow Trial": 100,
+                "Ganons Castle Water Trial": 100,
+                "Ganons Castle Forest Trial": 100
+            }
+        },
         "mix_entrance_pools": {
             "global_enable_percentage": 50,
             "geometric": false,
@@ -25,14 +53,6 @@
                 "Dungeon": 100,
                 "Overworld": 20,
                 "Boss": 50
-            }
-        },
-        "minor_items_as_major_chest": {
-            "global_enable_percentage": 0,
-            "geometric": false,
-            "opt_percentage": {
-                "bombchus": 0,
-                "shields": 0
             }
         },
         "shuffle_child_trade": {
@@ -52,21 +72,12 @@
                 "Mask of Truth": 50
             }
         },
-        "adult_trade_start": {
-            "global_enable_percentage": 100,
+        "minor_items_as_major_chest": {
+            "global_enable_percentage": 0,
             "geometric": false,
             "opt_percentage": {
-                "Pocket Egg": 100,
-                "Pocket Cucco": 100,
-                "Cojiro": 100,
-                "Odd Mushroom": 100,
-                "Odd Potion": 100,
-                "Poachers Saw": 100,
-                "Broken Sword": 100,
-                "Prescription": 100,
-                "Eyeball Frog": 100,
-                "Eyedrops": 100,
-                "Claim Check": 100
+                "bombchus": 0,
+                "shields": 0
             }
         },
         "misc_hints": {
@@ -84,6 +95,23 @@
                 "50_skulltulas": 50,
                 "frogs2": 0,
                 "mask_shop": 50
+            }
+        },
+        "adult_trade_start": {
+            "global_enable_percentage": 100,
+            "geometric": false,
+            "opt_percentage": {
+                "Pocket Egg": 100,
+                "Pocket Cucco": 100,
+                "Cojiro": 100,
+                "Odd Mushroom": 100,
+                "Odd Potion": 100,
+                "Poachers Saw": 100,
+                "Broken Sword": 100,
+                "Prescription": 100,
+                "Eyeball Frog": 100,
+                "Eyedrops": 100,
+                "Claim Check": 100
             }
         }
     },
@@ -116,9 +144,11 @@
             "anywhere": 2,
             "regional": 1
         },
-        "silver_rupee_pouches": {
-            "false": 4,
-            "true": 1
+        "silver_rupee_pouches_choice": {
+            "off": 0,
+            "choice": 1,
+            "all": 0,
+            "random": 0
         },
         "open_deku": {
             "false": 1,
