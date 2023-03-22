@@ -1,4 +1,4 @@
-__version__ = "2.4.5 Fenhl-2"
+__version__ = "2.4.5 Fenhl-3"
 
-randomizer_version = '7.1.80 Fenhl-1'
-randomizer_commit = 'bb40ee80fe50ae9029fd67bf755936a7bfa563f6'
+randomizer_version = '7.1.80 Fenhl-3'
+randomizer_commit = '7027b58705252b8b6c510289ce43695251c766e1'
