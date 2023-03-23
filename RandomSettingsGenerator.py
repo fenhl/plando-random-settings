@@ -14,19 +14,6 @@ import roll_settings as rs
 
 global_override_fname = None
 
-# Please set the weights file you with to load
-WEIGHTS = "RSL" # The default Random Settings League Season 5 weights
-# Every setting with even weights
-# WEIGHTS = "full-random"
-# Provide your own weights file. If the specified file does not exist, this will create it
-# WEIGHTS = "my_weights.json"
-
-# global_override_fname = "multiworld_override.json"
-# global_override_fname = "ddr_override.json"
-# global_override_fname = "beginner_override.json"
-# global_override_fname = "coop_override.json"
-
-
 if global_override_fname is not None:
     global_override_fname = os.path.join("weights", global_override_fname)
 
@@ -81,6 +68,8 @@ def get_command_line_args():
                         help="Retry limit for generating a plando file.")
     parser.add_argument("--rando_retries", type=range_limited_int_type, default=3,
                         help="Retry limit for running the randomizer with a given settings plando.")
+    parser.add_argument("--full_random", action="store_true", default=False,
+                        help="Allow every setting with even weights.")
     args = parser.parse_args()
 
 
@@ -106,7 +95,8 @@ def get_command_line_args():
         "seed_count": args.seed_count,
         "benchmark": args.benchmark,
         "plando_retries": args.plando_retries,
-        "rando_retries": args.rando_retries
+        "rando_retries": args.rando_retries,
+        "full_random": args.full_random,
     }
 
 
@@ -117,12 +107,16 @@ def main():
     # If we only want to check for new/changed settings
     if args["check_new_settings"]:
         _, _, rslweights = rs.load_weights_file("weights/rsl_season5.json")
-        tools.check_for_setting_changes(rslweights, rs.generate_balanced_weights(None))
+        tools.check_for_setting_changes(rslweights, rs.generate_balanced_weights(None)[1])
         return
+
+    weights = 'RSL'
+    if args["full_random"]:
+        weights = 'full-random'
 
     # If we only want to benchmark weights
     if args["benchmark"]:
-        weight_options, weight_multiselect, weight_dict, start_with = rs.generate_weights_override(WEIGHTS, args["override_fname"])
+        weight_options, weight_multiselect, weight_dict, start_with = rs.generate_weights_override(weights, args["override_fname"])
         tools.benchmark_weights(weight_options, weight_dict, weight_multiselect)
         return
 
@@ -136,7 +130,7 @@ def main():
 
         plandos_to_cleanup = []
         for i in range(args["plando_retries"]):
-            plando_filename = rs.generate_plando(WEIGHTS, args["override_fname"], args["no_seed"], args["worldcount"] if args["per_world_settings"] else 1)
+            plando_filename = rs.generate_plando(weights, args["override_fname"], args["no_seed"], args["worldcount"] if args["per_world_settings"] else 1)
             if args["no_seed"]:
                 break
             if not args["keep_plandos"]:
