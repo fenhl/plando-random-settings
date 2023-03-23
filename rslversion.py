@@ -1,4 +1,4 @@
-__version__ = "2.3.8 TestRunnerSRL-5"
+__version__ = "2.4.5 Dev-1"
 
-randomizer_version = '7.1.49 f.LUM'
-randomizer_commit = 'da94d090bd04fd29ea6bad4a957d3d2f854fea5f'
+randomizer_version = '7.1.80 f.LUM'
+randomizer_commit = '7dd3e1f4460347106b6d9445da1549a2f1a249bc'

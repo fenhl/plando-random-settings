@@ -4,6 +4,7 @@ import stat
 import zipfile
 import shutil
 import subprocess
+from utils import cleanup
 from rslversion import randomizer_commit, randomizer_version
 try:
     import requests
@@ -32,11 +33,10 @@ def download_randomizer():
     zippath = 'randomizer.zip'
 
     # Make sure an old zip isn't sitting around
-    if os.path.isfile(zippath):
-        os.remove(zippath)
+    cleanup(zippath)
 
     # Download the zipped randomizer
-    req = requests.get(f'https://github.com/TestRunnerSRL/OoT-Randomizer/archive/{randomizer_commit}.zip', stream=True)
+    req = requests.get(f'https://github.com/OoTRandomizer/OoT-Randomizer/archive/{randomizer_commit}.zip', stream=True)
     with open(zippath, 'wb') as fin:
         for chunk in req.iter_content():
             fin.write(chunk)
@@ -49,8 +49,8 @@ def download_randomizer():
         pass
 
     # Restore permissions in the unzipped randomizer
-    for executable in [os.path.join('randomizer', 'OoTRandomizer.py'), os.path.join('randomizer', 'bin', 'Decompress', 'Decompress')]:
+    for executable in [os.path.join('randomizer', 'OoTRandomizer.py'), os.path.join('randomizer', 'bin', 'Decompress', 'Decompress'), os.path.join('randomizer', 'bin', 'Decompress', 'Decompress.out')]:
         os.chmod(executable, os.stat(executable).st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
 
     # Delete the zip file
-    os.remove(zippath)
+    cleanup(zippath)

@@ -14,7 +14,7 @@ from randomizer.StartingItems import inventory, songs, equipment
 
 def load_weights_file(weights_fname):
     """ Given a weights filename, open it up. If the file does not exist, make it with even weights """
-    fpath = os.path.join("weights", weights_fname)
+    fpath = os.path.join(weights_fname)
     if os.path.isfile(fpath):
         with open(fpath) as fin:
             datain = json.load(fin)
@@ -76,6 +76,7 @@ def geometric_weights(N, startat=0, rtype="list"):
 
 def draw_starting_item_pool(random_settings, start_with):
     """ Select starting items, songs, and equipment. """
+    # random_settings["starting_items"] = draw_choices_from_pool(inventory)
     random_settings["starting_items"] = draw_choices_from_pool({
         name: info
         for name, info in inventory.items()
@@ -168,7 +169,7 @@ def draw_dungeon_shortcuts(random_settings):
 def generate_weights_override(weights, override_weights_fname):
     # Load the weight dictionary
     if weights == "RSL":
-        weight_options, weight_multiselect, weight_dict = load_weights_file("rsl_season5.json")
+        weight_options, weight_multiselect, weight_dict = load_weights_file("weights/rsl_season5.json")
     elif weights == "full-random":
         weight_options = {}
         weight_multiselect, weight_dict = generate_balanced_weights(None)
@@ -287,9 +288,10 @@ def generate_plando_inner(weights, override_weights_fname):
         if "starting_items" in weight_options and weight_options["starting_items"] == True:
             draw_starting_item_pool(random_settings, start_with)
 
-    # Don't require more Triforce pieces than placed
-    if "triforce_count_per_world" in random_settings and "triforce_goal_per_world" in random_settings and random_settings["triforce_count_per_world"] < random_settings["triforce_goal_per_world"]:
-        random_settings["triforce_goal_per_world"], random_settings["triforce_count_per_world"] = random_settings["triforce_count_per_world"], random_settings["triforce_goal_per_world"]
+    # swap range endpoints if necessary
+    for min_setting, max_setting in (("triforce_goal_per_world", "triforce_count_per_world"),):
+        if min_setting in random_settings and max_setting in random_settings and random_settings[max_setting] < random_settings[min_setting]:
+            random_settings[min_setting], random_settings[max_setting] = random_settings[max_setting], random_settings[min_setting]
 
     # Remove plando setting if a _random setting is true
     remove_plando_if_random(random_settings)

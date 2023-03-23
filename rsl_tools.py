@@ -73,7 +73,7 @@ def find_rom_file():
 def check_for_setting_changes(weights, randomizer_settings):
     """ Function to check for new settings and options when the randomizer is updated. """
     ignore_list = ["tricks_list_msg", "bingosync_url", "dungeon_shortcuts", "misc_hints", "mix_entrance_pools", "mq_dungeons_specific",
-                   "key_rings", "empty_dungeons_specific", "empty_dungeons_count", "adult_trade_start"]
+                   "key_rings", "empty_dungeons_specific", "empty_dungeons_count", "adult_trade_start", "hint_dist"]
 
     # Find new or changed settings by name
     old_settings = list(set(weights.keys()) - set(randomizer_settings.keys()))
@@ -91,6 +91,8 @@ def check_for_setting_changes(weights, randomizer_settings):
 
     # Find new or changed options
     for setting in weights.keys():
+        if setting in ignore_list:
+            continue
         # Randomizer has appropriate types for each variable but we store options as strings
         randomizer_settings_strings = set(map(lambda x: x.lower(), map(str, list(randomizer_settings[setting].keys()))))
         old_options = list(set(weights[setting].keys()) - randomizer_settings_strings)
