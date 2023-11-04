@@ -8,8 +8,12 @@ import conditionals as conds
 from rslversion import __version__
 sys.path.append("randomizer")
 from randomizer.ItemPool import trade_items, child_trade_items
-from randomizer.SettingsList import get_settings_from_tab, get_settings_from_section, get_setting_info, si_dict
+from randomizer.SettingsList import get_settings_from_tab, get_settings_from_section, SettingInfos
 from randomizer.StartingItems import inventory, songs, equipment
+
+def get_setting_info(setting_name):
+    """ Quick replacement for removed function in the randomizer. """
+    return SettingInfos.setting_infos[setting_name]
 
 
 def load_weights_file(weights_fname):
@@ -28,7 +32,7 @@ def load_weights_file(weights_fname):
 
 def generate_balanced_weights(fname="default_weights.json"):
     """ Generate a file with even weights for each setting. """
-    settings_to_randomize = [name for name, setting in si_dict.items() if setting.shared]
+    settings_to_randomize = [name for name, setting in SettingInfos.setting_infos.items() if setting.shared]
 
     exclude_from_weights = [
         "world_count",
@@ -38,8 +42,9 @@ def generate_balanced_weights(fname="default_weights.json"):
         "item_hints",
         "disabled_locations",
         "allowed_tricks",
-        "starting_equipment",
         "starting_items",
+        "starting_equipment",
+        "starting_inventory",
         "starting_songs",
     ]
     weight_multiselect = {}
@@ -76,12 +81,11 @@ def geometric_weights(N, startat=0, rtype="list"):
 
 def draw_starting_item_pool(random_settings, start_with):
     """ Select starting items, songs, and equipment. """
-    # random_settings["starting_items"] = draw_choices_from_pool(inventory)
-    random_settings["starting_items"] = draw_choices_from_pool({
+    random_settings["starting_inventory"] = draw_choices_from_pool({
         name: info
         for name, info in inventory.items()
-        if (info.itemname not in trade_items or info.itemname in random_settings["adult_trade_start"])
-        and (info.itemname not in child_trade_items or info.itemname in random_settings["shuffle_child_trade"] or info.itemname == 'Zeldas Letter')
+        if (info.item_name not in trade_items or info.item_name in random_settings["adult_trade_start"])
+        and (info.item_name not in child_trade_items or info.item_name in random_settings["shuffle_child_trade"] or info.item_name == 'Zeldas Letter')
     })
     random_settings["starting_songs"] = draw_choices_from_pool(songs)
     random_settings["starting_equipment"] = draw_choices_from_pool(equipment)
@@ -116,7 +120,7 @@ def remove_redundant_settings(random_settings):
         if setting in random_settings.keys():
             info = get_setting_info(setting)
             choice = random_settings[setting]
-            if info.disable != None:
+            if info.disable is not None:
                 for option, disabling in info.disable.items():
                     negative = False
                     if isinstance(option, str) and option[0] == '!':
@@ -138,7 +142,7 @@ def remove_disabled_setting(random_settings, other_setting):
         random_settings.pop(other_setting)
 
 def resolve_multiselect_weights(setting, options):
-    """ Given a multiselect weights block, resolve into the plando options. 
+    """ Given a multiselect weights block, resolve into the plando options.
     A multiselect block should contain the following elements in addition to individual weights
 
     global_enable_percentage [0,100] - the chance at rolling any on in the first place
@@ -147,7 +151,7 @@ def resolve_multiselect_weights(setting, options):
     """
     if random.random()*100 > options["global_enable_percentage"]:
         return []
-    
+
     if "geometric" in options.keys() and options["geometric"]:
         nopts = len(get_setting_info(setting).choices)
         N = random.choices(range(nopts+1), weights=geometric_weights(nopts+1))[0]
@@ -169,7 +173,7 @@ def draw_dungeon_shortcuts(random_settings):
 def generate_weights_override(weights, override_weights_fname):
     # Load the weight dictionary
     if weights == "RSL":
-        weight_options, weight_multiselect, weight_dict = load_weights_file("weights/rsl_season5.json")
+        weight_options, weight_multiselect, weight_dict = load_weights_file("weights/rsl_season6.json")
     elif weights == "full-random":
         weight_options = {}
         weight_multiselect, weight_dict = generate_balanced_weights(None)
@@ -178,7 +182,7 @@ def generate_weights_override(weights, override_weights_fname):
 
 
     # If an override_weights file name is provided, load it
-    start_with = {"starting_items":[], "starting_songs":[], "starting_equipment":[]}
+    start_with = {"starting_inventory":[], "starting_songs":[], "starting_equipment":[]}
     if override_weights_fname is not None:
         print(f"RSL GENERATOR: LOADING OVERRIDE WEIGHTS from {override_weights_fname}")
         override_options, override_multiselect, override_weights = load_weights_file(override_weights_fname)
@@ -224,7 +228,7 @@ def generate_weights_override(weights, override_weights_fname):
         if override_multiselect is not None:
             for key, value in override_multiselect.items():
                 weight_multiselect[key] = value
-    
+
     return weight_options, weight_multiselect, weight_dict, start_with
 
 def generate_plando(weights, override_weights_fname, no_seed, worldcount):
@@ -308,7 +312,7 @@ def generate_plando_inner(weights, override_weights_fname):
                 raise TypeError(f'Value for setting {setting!r} must be "true" or "false"')
         elif setting_type is int:
             value = int(value)
-        elif setting_type is not str and setting not in ["allowed_tricks", "disabled_locations", "starting_items", "starting_songs", "starting_equipment", "hint_dist_user", "dungeon_shortcuts"] + list(weight_multiselect.keys()):
+        elif setting_type is not str and setting not in ["allowed_tricks", "disabled_locations", "starting_inventory", "starting_songs", "starting_equipment", "hint_dist_user", "dungeon_shortcuts"] + list(weight_multiselect.keys()):
             raise NotImplementedError(f'{setting} has an unsupported setting type: {setting_type!r}')
         random_settings[setting] = value
 

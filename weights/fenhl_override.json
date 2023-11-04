@@ -87,7 +87,7 @@
                 "altar": 100,
                 "dampe_diary": 100,
                 "ganondorf": 100,
-                "warp_songs": 100,
+                "warp_songs_and_owls": 100,
                 "10_skulltulas": 10,
                 "20_skulltulas": 20,
                 "30_skulltulas": 30,
@@ -168,18 +168,14 @@
             "random": 0
         },
         "shuffle_hideout_entrances": {
-            "true": 1,
-            "false": 1
+            "off": 2,
+            "hideout_savewarp": 1,
+            "overworld_savewarp": 1
         },
         "shuffle_dungeon_entrances": {
             "off": 2,
             "simple": 1,
             "all": 1
-        },
-        "shuffle_gerudo_valley_river_exit": {
-            "off": 2,
-            "balanced": 1,
-            "full": 1
         },
         "owl_drops": {
             "off": 2,

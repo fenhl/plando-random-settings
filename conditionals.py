@@ -74,15 +74,23 @@ def disable_pot_chest_texture_independence(random_settings, **kwargs):
         random_settings['correct_potcrate_appearances'] = 'off'
 
 
-def disable_hideoutkeys_independence(random_settings, **kwargs):
-    """ Set shuffle_hideoutkeys to match shuffle_smallkeys. """
-    if random_settings['shuffle_smallkeys'] in ['remove', 'vanilla', 'dungeon']:
+def disable_keysanity_independence(random_settings, **kwargs):
+    """ Set shuffle_hideoutkeys and shuffle_tcgkeys to match shuffle_smallkeys. """
+    if random_settings['shuffle_smallkeys'] == 'remove':
         random_settings['shuffle_hideoutkeys'] = 'vanilla'
+        # random_settings['shuffle_tcgkeys'] = 'remove'
+
+    elif random_settings['shuffle_smallkeys'] in ['vanilla', 'dungeon']:
+        random_settings['shuffle_hideoutkeys'] = 'vanilla'
+        # random_settings['shuffle_tcgkeys'] = 'vanilla'
+
     else:
         random_settings['shuffle_hideoutkeys'] = random_settings['shuffle_smallkeys']
+        # random_settings['shuffle_tcgkeys'] = random_settings['shuffle_smallkeys']
 
 
 def restrict_one_entrance_randomizer(random_settings, **kwargs):
+    """ Ensure only a single pool is shuffled. If more than 1 is shuffled, randomly select one to disable until only one is enabled. """
     erlist = ["shuffle_interior_entrances:off", "shuffle_grotto_entrances:false", "shuffle_dungeon_entrances:false", "shuffle_overworld_entrances:false"]
 
     # Count how many ER are on
@@ -96,7 +104,7 @@ def restrict_one_entrance_randomizer(random_settings, **kwargs):
     if len(enabled_er) < 2:
         return
     keepon = random.choice(enabled_er).split(":")[0]
-    
+
     # Turn the rest off
     for item in erlist:
         setting, off_option = item.split(":")
@@ -119,7 +127,7 @@ def dynamic_skulltula_wincon(random_settings, **kwargs):
     skull_wincon = random.choices([True, False], weights=[chance_of_skull_wincon, 100-chance_of_skull_wincon])[0]
     if not skull_wincon:
         return
-    
+
     # Roll for bridge/bosskey/both
     whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
     if whichtype in ['bridge', 'both']:
@@ -174,7 +182,7 @@ def replace_dampe_diary_hint_with_lightarrow(random_settings, **kwargs):
     # Load the distro and change the misc hint
     with open(os.path.join('randomizer', 'data', 'Hints', current_distro+'.json')) as fin:
         distroin = json.load(fin)
-    distroin['misc_hint_items'] = { 'dampe_diary': "Light Arrows" }
+    distroin['misc_hint_items'] = {'dampe_diary': "Light Arrows"}
     random_settings['hint_dist_user'] = distroin
 
 
@@ -194,7 +202,7 @@ def split_collectible_bridge_conditions(random_settings, **kwargs):
 
     # Roll for hearts or skulls
     condition = random.choices(["hearts", "tokens"], weights=typeweights)[0]
-    
+
     # Roll for bridge/bosskey/both
     whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
     if whichtype in ['bridge', 'both']:
@@ -224,7 +232,9 @@ def adjust_chaos_hint_distro(random_settings, **kwargs):
 
     # Make changes and save
     distroin['distribution']['always']['copies'] = 2
-    distroin['distribution']['sometimes']['weight'] = 0
+    distroin['distribution']['overworld']['weight'] = 0
+    distroin['distribution']['dungeon']['weight'] = 0
+    distroin['distribution']['song']['weight'] = 0
     random_settings['hint_dist_user'] = distroin
 
 
@@ -241,7 +251,7 @@ def exclude_mapcompass_info_remove(random_settings, weight_dict, **kwargs):
 def ohko_starts_with_nayrus(random_settings, weight_dict, extra_starting_items, **kwargs):
     """ If one hit ko is enabled, add Nayru's Love to the starting items """
     if random_settings['damage_multiplier'] == 'ohko':
-        extra_starting_items['starting_items'] += ['nayrus_love']
+        extra_starting_items['starting_inventory'] += ['nayrus_love']
 
 def invert_dungeons_mq_count(random_settings, weight_dict, **kwargs):
     """ When activated will invert the MQ dungeons count
@@ -255,10 +265,10 @@ def invert_dungeons_mq_count(random_settings, weight_dict, **kwargs):
 
     if not invert_mq_count:
         return
-    
+
     current_mq_dungeons_count = int(random_settings['mq_dungeons_count'])
     new_mq_dungeons_count = 12 - current_mq_dungeons_count
-    
+
     random_settings['mq_dungeons_count'] = new_mq_dungeons_count
 
 
@@ -266,11 +276,34 @@ def replicate_old_child_trade(random_settings, extra_starting_items, **kwargs):
     """ Emulate old behavior for sstarting child trade. This should be removed
         once season 6 begins and is only here to keep season 5 support.
     """
-    ctrade = random.choices(["vanilla", "shuffle", "scz"], weights=[1,1,2])[0]
+    ctrade = random.choices(["vanilla", "shuffle", "scz"], weights=[1, 1, 2])[0]
     if ctrade == "vanilla":
         random_settings["shuffle_child_trade"] = []
     elif ctrade == "shuffle":
         random_settings["shuffle_child_trade"] = ["Weird Egg"]
     else:
         random_settings["shuffle_child_trade"] = []
-        extra_starting_items['starting_items'] += ["zeldas_letter"]
+        extra_starting_items['starting_inventory'] += ["zeldas_letter"]
+
+
+def shuffle_valley_lake_exit(random_settings, **kwargs):
+    """ If both OWER and owl shuffle are on, shuffle the gerudo valley -> lake entrance """
+    if random_settings['shuffle_overworld_entrances'] in ('true', True):
+        if random_settings['owl_drops'] == 'full':
+            random_settings['shuffle_gerudo_valley_river_exit'] = 'full'
+        elif random_settings['owl_drops'] == 'balanced':
+            random_settings['shuffle_gerudo_valley_river_exit'] = 'balanced'
+
+
+def select_one_pots_crates_freestanding(random_settings, **kwargs):
+    chance_one_is_on = int(kwargs['cparams'][0])
+    setting_weights = [int(x) for x in kwargs['cparams'][1].split('/')]
+    weights = [int(x) for x in kwargs['cparams'][2].split('/')]
+
+    # If setting is randomized off, return
+    if not (random.randint(0, 100) < chance_one_is_on):
+       return
+
+    # Choose which of the settings to turn on
+    setting = random.choices(["shuffle_pots", "shuffle_crates", "shuffle_freestanding_items"], weights=setting_weights)[0]
+    random_settings[setting] = random.choices(["overworld", "dungeons", "all"], weights=weights)[0]
