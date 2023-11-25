@@ -229,11 +229,19 @@
             "overworld": 1,
             "dungeons": 1
         },
+        "shuffle_empty_pots": {
+            "false": 1,
+            "true": 1
+        },
         "shuffle_crates": {
             "off": 17,
             "all": 1,
             "overworld": 1,
             "dungeons": 1
+        },
+        "shuffle_empty_crates": {
+            "false": 1,
+            "true": 1
         },
         "shuffle_beehives": {
             "false": 1,
