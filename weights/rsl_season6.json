@@ -81,16 +81,6 @@
             "global_enable_percentage": 100,
             "geometric": true
         },
-        "mix_entrance_pools": {
-            "global_enable_percentage": 50,
-            "geometric": false,
-            "opt_percentage": {
-                "Interior": 100,
-                "GrottoGrave": 100,
-                "Dungeon": 100,
-                "Overworld": 20
-            }
-        },
         "misc_hints": {
             "global_enable_percentage": 100,
             "geometric": false,
@@ -177,6 +167,15 @@
                 "Ganon's Castle Shadow Trial": 100,
                 "Ganon's Castle Water Trial": 100,
                 "Ganon's Castle Forest Trial": 100
+            }
+        },
+        "minor_items_as_major_chest": {
+            "global_enable_percentage": 0,
+            "geometric": false,
+            "opt_percentage": {
+                "bombchus": 100,
+                "shields": 100,
+                "capacity": 100
             }
         }
     },
@@ -367,10 +366,6 @@
         "shuffle_overworld_entrances": {
             "true": 3,
             "false": 7
-        },
-        "decouple_entrances": {
-            "true": 0,
-            "false": 1
         },
         "owl_drops": {
             "true": 1,
@@ -781,10 +776,6 @@
         "fix_broken_drops": {
             "true": 1,
             "false": 0
-        },
-        "minor_items_as_major_chest": {
-            "true": 0,
-            "false": 1
         },
         "starting_hearts": {
             "3": 131072,
