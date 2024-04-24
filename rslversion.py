@@ -1,4 +1,4 @@
-__version__ = "2.5.11 devmvp-1"
+__version__ = "2.5.11 devmvp-2"
 
-randomizer_version = '8.0.22 f.LUM'
-randomizer_commit = 'f3dad2bc3eb81bc2e43e263a8c315cc40d30683c'
+randomizer_version = '8.1.31 f.LUM'
+randomizer_commit = 'e10cb81862ca41ae80c81e3277f1d03e923c99c9'
