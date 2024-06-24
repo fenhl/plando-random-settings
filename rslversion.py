@@ -1,4 +1,9 @@
-__version__ = "2.5.11 devmvp-2"
+__version__ = "2.6.1 devmvp-1"
 
-randomizer_version = '8.1.31 f.LUM'
-randomizer_commit = 'e10cb81862ca41ae80c81e3277f1d03e923c99c9'
+# Randomizer Info
+randomizer_repo = 'OoTRandomizer/OoT-Randomizer'
+randomizer_version = '8.1.48 f.LUM'
+randomizer_commit = 'b192e39e2815043d15b9a3b447ebe23878834671'
+
+# Requirements
+MIN_PY_VERSION = (3, 9)
