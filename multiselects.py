@@ -38,7 +38,6 @@ ms_option_lookup = {
         'Ice Cavern', 'Gerudo Training Ground', 'Ganons Castle'],
     "empty_dungeons_specific": ['Deku Tree', 'Dodongos Cavern', 'Jabu Jabus Belly', 'Forest Temple',
         'Fire Temple', 'Water Temple', 'Shadow Temple', 'Spirit Temple'],
-    "mix_entrance_pools": ["Interior", "GrottoGrave", "Dungeon", "Overworld"],
     "spawn_positions": ["child", "adult"],
     "shuffle_child_trade": ['Weird Egg', 'Chicken', 'Zeldas Letter', 'Keaton Mask', 'Skull Mask',
         'Spooky Mask', 'Bunny Hood', 'Goron Mask', 'Zora Mask', 'Gerudo Mask', 'Mask of Truth'],
