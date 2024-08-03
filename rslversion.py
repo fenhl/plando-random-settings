@@ -1,4 +1,4 @@
-__version__ = "2.6.1 devmvp-1"
+__version__ = "2.6.3 devmvp-1"
 
 # Randomizer Info
 randomizer_repo = 'OoTRandomizer/OoT-Randomizer'

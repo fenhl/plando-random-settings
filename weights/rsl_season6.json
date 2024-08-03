@@ -9,23 +9,33 @@
         "triforce_goal_per_world_max": 100,
         "starting_items": true,
         "conditionals": {
-            "exclude_minimal_triforce_hunt": [false],
             "constant_triforce_hunt_extras": [true],
             "exclude_ice_trap_misery": [true],
             "disable_keysanity_independence": [true],
-            "disable_pot_chest_texture_independence": [false],
-            "restrict_one_entrance_randomizer": [false],
             "random_scrubs_start_wallet": [true],
             "split_collectible_bridge_conditions": [true, 15, "50/50", "40/40/20"],
-            "shuffle_goal_hints": [false, 50],
             "replace_dampe_diary_hint_with_lightarrow": [true],
             "adjust_chaos_hint_distro": [true],
             "exclude_mapcompass_info_remove": [true],
             "ohko_starts_with_nayrus": [true],
-            "invert_dungeons_mq_count": [false, 0],
             "shuffle_valley_lake_exit": [true],
-            "select_one_pots_crates_freestanding": [true, 20, "1/1/1", "1/1/1"]
+            "select_one_pots_crates_freestanding": [true, 20, "1/1/1", "1/1/1"],
+            "geometrically_draw_dungeon_shortcuts": [true],
+            "limit_overworld_entrances_in_mixed_entrance_pools": [true, 20],
+            "restrict_one_entrance_randomizer": [false],
+            "disable_pot_chest_texture_independence": [false],
+            "shuffle_goal_hints": [false, 50],
+            "invert_dungeons_mq_count": [false, 0],
+            "exclude_minimal_triforce_hunt": [false]
         },
+        "misc_hints": [
+            "altar",
+            "dampe_diary",
+            "ganondorf",
+            "warp_songs_and_owls",
+            "mask_shop",
+            "unique_merchants"
+        ],
         "tricks": [
             "logic_fewer_tunic_requirements",
             "logic_grottos_without_agony",
@@ -58,123 +68,13 @@
         "disabled_locations": []
     },
     "multiselect": {
-        "key_rings": {
-            "global_enable_percentage": 20,
-            "geometric": false,
-            "opt_percentage": {
-                "Thieves Hideout": 100,
-                "Treasure Chest Game": 100,
-                "Forest Temple": 100,
-                "Fire Temple": 100,
-                "Water Temple": 100,
-                "Shadow Temple": 100,
-                "Spirit Temple": 100,
-                "Bottom of the Well": 100,
-                "Gerudo Training Ground": 100,
-                "Ganons Castle": 100
-            }
-        },
-        "dungeon_shortcuts": {
-            "global_enable_percentage": 100,
-            "geometric": true
-        },
-        "misc_hints": {
-            "global_enable_percentage": 100,
-            "geometric": false,
-            "opt_percentage": {
-                "altar": 100,
-                "dampe_diary": 100,
-                "ganondorf": 100,
-                "warp_songs_and_owls": 100,
-                "10_skulltulas": 0,
-                "20_skulltulas": 0,
-                "30_skulltulas": 0,
-                "40_skulltulas": 0,
-                "50_skulltulas": 0,
-                "frogs2": 0,
-                "mask_shop": 100,
-                "unique_merchants": 100
-            }
-        },
-        "adult_trade_start": {
-            "global_enable_percentage": 100,
-            "geometric": false,
-            "opt_percentage": {
-                "Pocket Egg": 100,
-                "Pocket Cucco": 100,
-                "Cojiro": 100,
-                "Odd Mushroom": 100,
-                "Odd Potion": 100,
-                "Poachers Saw": 100,
-                "Broken Sword": 100,
-                "Prescription": 100,
-                "Eyeball Frog": 100,
-                "Eyedrops": 100,
-                "Claim Check": 100
-            }
-        },
-        "spawn_positions": {
-            "global_enable_percentage": 50,
-            "geometric": false,
-            "opt_percentage": {
-                "child": 100,
-                "adult": 100
-            }
-        },
-        "shuffle_child_trade": {
-            "global_enable_percentage": 20,
-            "geometric": false,
-            "opt_percentage": {
-                "Weird Egg": 100,
-                "Chicken": 100,
-                "Zeldas Letter": 100,
-                "Keaton Mask": 100,
-                "Skull Mask": 100,
-                "Spooky Mask": 100,
-                "Bunny Hood": 100,
-                "Goron Mask": 100,
-                "Zora Mask": 100,
-                "Gerudo Mask": 100,
-                "Mask of Truth": 100
-            }
-        },
-        "silver_rupee_pouches": {
-            "global_enable_percentage": 0,
-            "geometric": false,
-            "opt_percentage": {
-                "Dodongo's Cavern Staircase": 100,
-                "Ice Cavern Spinning Scythe": 100,
-                "Ice Cavern Push Block": 100,
-                "Bottom of the Well Basement": 100,
-                "Shadow Temple Scythe Shortcut": 100,
-                "Shadow Temple Invisible Blades": 100,
-                "Shadow Temple Huge Pit": 100,
-                "Shadow Temple Invisible Spikes": 100,
-                "Gerudo Training Ground Slopes": 100,
-                "Gerudo Training Ground Lava": 100,
-                "Gerudo Training Ground Water": 100,
-                "Spirit Temple Child Early Torches": 100,
-                "Spirit Temple Adult Boulders": 100,
-                "Spirit Temple Lobby and Lower Adult": 100,
-                "Spirit Temple Sun Block": 100,
-                "Spirit Temple Adult Climb": 100,
-                "Ganon's Castle Spirit Trial": 100,
-                "Ganon's Castle Light Trial": 100,
-                "Ganon's Castle Fire Trial": 100,
-                "Ganon's Castle Shadow Trial": 100,
-                "Ganon's Castle Water Trial": 100,
-                "Ganon's Castle Forest Trial": 100
-            }
-        },
-        "minor_items_as_major_chest": {
-            "global_enable_percentage": 0,
-            "geometric": false,
-            "opt_percentage": {
-                "bombchus": 100,
-                "shields": 100,
-                "capacity": 100
-            }
-        }
+        "key_rings": 20,
+        "silver_rupee_pouches": 100,
+        "dungeon_shortcuts": 0,
+        "spawn_positions": 50,
+        "shuffle_child_trade": 20,
+        "minor_items_as_major_chest": 0,
+        "adult_trade_start": 100
     },
     "weights": {
         "shuffle_loach_reward": {
