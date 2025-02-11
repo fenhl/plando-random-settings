@@ -6,6 +6,7 @@ import argparse
 import shutil
 
 import update_randomizer as ur
+ur.check_python()
 ur.check_version()
 
 from utils import cleanup
@@ -34,7 +35,7 @@ def range_limited_int_type(arg):
     """ Type function for argparse - a positive int """
     try:
         i = int(arg)
-    except ValueError:    
+    except ValueError:
         raise argparse.ArgumentTypeError("Must be an integer")
     if i < 1:
         raise argparse.ArgumentTypeError("Argument must be > 0")
@@ -60,6 +61,8 @@ def get_command_line_args():
                         help="When the version updates, run with this flag to find changes to settings names or new settings.")
     parser.add_argument("--no_log_errors", action="store_true", default=False,
                         help="Only show errors in the console, don't log them to a file.")
+    parser.add_argument("--plando_filename_base", default="random_settings",
+                        help="First part of the file names for the generated plandomizer files.")
     parser.add_argument("--stress_test", type=range_limited_int_type, default=1, dest="seed_count",
                         help="Generate the specified number of seeds for benchmarking.")
     parser.add_argument("--benchmark", action="store_true",
@@ -77,9 +80,10 @@ def get_command_line_args():
     if args.override is not None:
         if global_override_fname is not None:
             raise RuntimeError("RSL GENERATOR ERROR: PROVIDING MULTIPLE SETTINGS WEIGHT OVERRIDES IS NOT SUPPORTED.")
-        override_path = os.path.join(os.getcwd(), args.override)
-        if not os.path.isfile(override_path):
-            raise FileNotFoundError(f"RSL GENERATOR ERROR: CANNOT FIND SPECIFIED OVERRIDE FILE IN DIRECTORY:\n{override_path}")
+        if args.override != '-':
+            override_path = os.path.join(os.getcwd(), args.override)
+            if not os.path.isfile(override_path):
+                raise FileNotFoundError(f"RSL GENERATOR ERROR: CANNOT FIND SPECIFIED OVERRIDE FILE IN DIRECTORY:\n{override_path}")
 
     # Parse args
     LOG_ERRORS = not args.no_log_errors
@@ -92,6 +96,7 @@ def get_command_line_args():
         "per_world_settings": args.per_world_settings,
         "override_fname": args.override or global_override_fname,
         "check_new_settings": args.check_new_settings,
+        "plando_filename_base": args.plando_filename_base,
         "seed_count": args.seed_count,
         "benchmark": args.benchmark,
         "plando_retries": args.plando_retries,
@@ -106,7 +111,7 @@ def main():
 
     # If we only want to check for new/changed settings
     if args["check_new_settings"]:
-        _, _, rslweights = rs.load_weights_file("weights/rsl_season6.json")
+        _, _, rslmultis, rslweights = rs.load_weights_file("weights/rsl_season7.json")
         tools.check_for_setting_changes(rslweights, rs.generate_balanced_weights(None)[1])
         return
 
@@ -130,7 +135,7 @@ def main():
 
         plandos_to_cleanup = []
         for i in range(args["plando_retries"]):
-            plando_filename = rs.generate_plando(weights, args["override_fname"], args["no_seed"], args["worldcount"] if args["per_world_settings"] else 1)
+            plando_filename = rs.generate_plando(weights, args["override_fname"], args["no_seed"], args["worldcount"] if args["per_world_settings"] else 1, args["plando_filename_base"])
             if args["no_seed"]:
                 break
             if not args["keep_plandos"]:

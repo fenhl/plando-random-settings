@@ -5,6 +5,9 @@ import sys
 from datetime import date, datetime, timedelta
 from decimal import Decimal, ROUND_UP
 
+from multiselects import ms_option_lookup
+from utils import geometric_weights, string_to_int
+
 
 def parse_conditionals(conditional_list, weight_dict, random_settings, extra_starting_items):
     """ Parse the conditionals in the weights file to enable/disable them """
@@ -90,8 +93,8 @@ def disable_keysanity_independence(random_settings, **kwargs):
 
 
 def restrict_one_entrance_randomizer(random_settings, **kwargs):
-    """ Ensure only a single pool is shuffled. If more than 1 is shuffled, randomly select one to disable until only one is enabled. """
-    erlist = ["shuffle_interior_entrances:off", "shuffle_grotto_entrances:false", "shuffle_dungeon_entrances:false", "shuffle_overworld_entrances:false"]
+    """ Ensure only a single pool is shuffled. If more than 1 is shuffled, randomly select one to keep and disable the rest. """
+    erlist = ["shuffle_interior_entrances:off", "shuffle_grotto_entrances:false", "shuffle_dungeon_entrances:off", "shuffle_overworld_entrances:false"]
 
     # Count how many ER are on
     enabled_er = []
@@ -118,45 +121,9 @@ def random_scrubs_start_wallet(random_settings, weight_dict, extra_starting_item
         extra_starting_items['starting_equipment'] += ['wallet']
 
 
-def dynamic_skulltula_wincon(random_settings, **kwargs):
-    """ Rolls skull win condition seperately. Takes extra inputs [weight of skull win con, "bridge%/gbk%/both"] """
-    chance_of_skull_wincon = int(kwargs['cparams'][0])
-    weights = [int(x) for x in kwargs['cparams'][1].split('/')]
-
-    # Roll for a skull win condition
-    skull_wincon = random.choices([True, False], weights=[chance_of_skull_wincon, 100-chance_of_skull_wincon])[0]
-    if not skull_wincon:
-        return
-
-    # Roll for bridge/bosskey/both
-    whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
-    if whichtype in ['bridge', 'both']:
-        random_settings['bridge'] = 'tokens'
-    if whichtype in ['gbk', 'both']:
-        random_settings['shuffle_ganon_bosskey'] = 'tokens'
-
-
-def dynamic_heart_wincon(random_settings, **kwargs):
-    """ Rolls heart win condition seperately. Takes extra inputs [weight of skheartull win con, "bridge%/gbk%/both"] """
-    chance_of_heart_wincon = int(kwargs['cparams'][0])
-    weights = [int(x) for x in kwargs['cparams'][1].split('/')]
-
-    # Roll for a heart win condition
-    heart_wincon = random.choices([True, False], weights=[chance_of_heart_wincon, 100-chance_of_heart_wincon])[0]
-    if not heart_wincon:
-        return
-
-    # Roll for bridge/bosskey/both
-    whichtype = random.choices(['bridge', 'gbk', 'both'], weights=weights)[0]
-    if whichtype in ['bridge', 'both']:
-        random_settings['bridge'] = 'hearts'
-    if whichtype in ['gbk', 'both']:
-        random_settings['shuffle_ganon_bosskey'] = 'hearts'
-
-
 def shuffle_goal_hints(random_settings, **kwargs):
     """ Swaps Way of the Hero hints with Goal hints. Takes an extra input [how often to swap] """
-    chance_of_goals = int(kwargs['cparams'][0])
+    chance_of_goals = string_to_int(kwargs['cparams'][0])
     current_distro = random_settings['hint_dist']
 
     # Roll to swap goal hints
@@ -186,12 +153,11 @@ def replace_dampe_diary_hint_with_lightarrow(random_settings, **kwargs):
     random_settings['hint_dist_user'] = distroin
 
 
-
 def split_collectible_bridge_conditions(random_settings, **kwargs):
     """ Split heart and skulltula token bridge and ganon boss key.
     kwargs: [how often to have a heart or skull bridge, "heart%/skull%", "bridge%/gbk%/both"]
     """
-    chance_of_collectible_wincon = int(kwargs['cparams'][0])
+    chance_of_collectible_wincon = string_to_int(kwargs['cparams'][0])
     typeweights = [int(x) for x in kwargs['cparams'][1].split('/')]
     weights = [int(x) for x in kwargs['cparams'][2].split('/')]
 
@@ -260,7 +226,7 @@ def invert_dungeons_mq_count(random_settings, weight_dict, **kwargs):
     if random_settings['mq_dungeons_mode'] != 'count':
         return
 
-    chance_of_inverting_mq_count = int(kwargs['cparams'][0])
+    chance_of_inverting_mq_count = string_to_int(kwargs['cparams'][0])
     invert_mq_count = random.choices([True, False], weights=[chance_of_inverting_mq_count, 100-chance_of_inverting_mq_count])[0]
 
     if not invert_mq_count:
@@ -270,20 +236,6 @@ def invert_dungeons_mq_count(random_settings, weight_dict, **kwargs):
     new_mq_dungeons_count = 12 - current_mq_dungeons_count
 
     random_settings['mq_dungeons_count'] = new_mq_dungeons_count
-
-
-def replicate_old_child_trade(random_settings, extra_starting_items, **kwargs):
-    """ Emulate old behavior for sstarting child trade. This should be removed
-        once season 6 begins and is only here to keep season 5 support.
-    """
-    ctrade = random.choices(["vanilla", "shuffle", "scz"], weights=[1, 1, 2])[0]
-    if ctrade == "vanilla":
-        random_settings["shuffle_child_trade"] = []
-    elif ctrade == "shuffle":
-        random_settings["shuffle_child_trade"] = ["Weird Egg"]
-    else:
-        random_settings["shuffle_child_trade"] = []
-        extra_starting_items['starting_inventory'] += ["zeldas_letter"]
 
 
 def shuffle_valley_lake_exit(random_settings, **kwargs):
@@ -296,7 +248,7 @@ def shuffle_valley_lake_exit(random_settings, **kwargs):
 
 
 def select_one_pots_crates_freestanding(random_settings, **kwargs):
-    chance_one_is_on = int(kwargs['cparams'][0])
+    chance_one_is_on = string_to_int(kwargs['cparams'][0])
     setting_weights = [int(x) for x in kwargs['cparams'][1].split('/')]
     weights = [int(x) for x in kwargs['cparams'][2].split('/')]
 
@@ -307,3 +259,35 @@ def select_one_pots_crates_freestanding(random_settings, **kwargs):
     # Choose which of the settings to turn on
     setting = random.choices(["shuffle_pots", "shuffle_crates", "shuffle_freestanding_items"], weights=setting_weights)[0]
     random_settings[setting] = random.choices(["overworld", "dungeons", "all"], weights=weights)[0]
+
+
+def geometrically_draw_dungeon_shortcuts(random_settings, **kwargs):
+    nunique = len(ms_option_lookup["dungeon_shortcuts"])
+    chooseN = random.choices(range(nunique+1), weights=geometric_weights(nunique+1))[0]
+    random_settings["dungeon_shortcuts"] = random.sample(ms_option_lookup["dungeon_shortcuts"], chooseN)
+
+
+def limit_overworld_entrances_in_mixed_entrance_pools(random_settings, **kwargs):
+    if len(random_settings["mix_entrance_pools"]) < 1:
+        return
+
+    # Decide if overworld should be included
+    overworld_probability = string_to_int(kwargs['cparams'][0])
+    includeOverworld = random.random()*100 < overworld_probability
+    # If needed, remove overworld from mixed pools
+    if not includeOverworld and "Overworld" in random_settings["mix_entrance_pools"]:
+        random_settings["mix_entrance_pools"].remove("Overworld")
+
+
+def limit_mixed_pool_entrances(random_settings, **kwargs):
+    max_mixed = int(kwargs['cparams'][0])
+    omit_overworld = bool(kwargs['cparams'][1])
+    if omit_overworld and "Overworld" in random_settings["mix_entrance_pools"]:
+        random_settings["mix_entrance_pools"].remove("Overworld")
+    if len(random_settings["mix_entrance_pools"]) > max_mixed:
+        random_settings["mix_entrance_pools"] = random.sample(random_settings["mix_entrance_pools"], max_mixed)
+
+
+def keysanity_key_get_keyrings(random_settings, **kwargs):
+    if random_settings['shuffle_smallkeys'] == 'keysanity':
+        random_settings['key_rings'] = ms_option_lookup["key_rings"]

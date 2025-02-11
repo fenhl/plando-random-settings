@@ -1,4 +1,8 @@
-__version__ = "2.5.10 Fenhl-3"
+__version__ = "2.8.2 Fenhl-1"
 
-randomizer_version = '8.0.2 Fenhl-6'
-randomizer_commit = '8e6e8329771d2fe1ea7430f53d63551a9020fffa'
+randomizer_repo = 'fenhl/OoT-Randomizer'
+randomizer_version = '8.2.55 Fenhl-1'
+randomizer_commit = '4fc8707c1783ce43e728247ccd125a7cf55b8b78'
+
+# Requirements
+MIN_PY_VERSION = (3, 9)
