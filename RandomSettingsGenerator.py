@@ -3,6 +3,8 @@ import sys
 import os
 import traceback
 import argparse
+import random
+import hashlib
 import shutil
 
 import update_randomizer as ur
@@ -12,6 +14,7 @@ ur.check_version()
 from utils import cleanup
 import rsl_tools as tools
 import roll_settings as rs
+from rslversion import __version__
 
 global_override_fname = None
 
@@ -59,7 +62,7 @@ def get_command_line_args():
                         help="Generate settings separately for each world.")
     parser.add_argument("--check_new_settings", action="store_true",
                         help="When the version updates, run with this flag to find changes to settings names or new settings.")
-    parser.add_argument("--no_log_errors", action="store_true", default=False,
+    parser.add_argument("--no_log_errors", action="store_true",
                         help="Only show errors in the console, don't log them to a file.")
     parser.add_argument("--plando_filename_base", default="random_settings",
                         help="First part of the file names for the generated plandomizer files.")
@@ -71,7 +74,10 @@ def get_command_line_args():
                         help="Retry limit for generating a plando file.")
     parser.add_argument("--rando_retries", type=range_limited_int_type, default=3,
                         help="Retry limit for running the randomizer with a given settings plando.")
-    parser.add_argument("--full_random", action="store_true", default=False,
+    parser.add_argument("--seed", help="Generate the specified seed.")
+    parser.add_argument("--no_salt", action="store_true",
+                        help="Do not salt the specified seed with the script version number.")
+    parser.add_argument("--full_random", action="store_true",
                         help="Allow every setting with even weights.")
     args = parser.parse_args()
 
@@ -87,6 +93,13 @@ def get_command_line_args():
 
     # Parse args
     LOG_ERRORS = not args.no_log_errors
+
+    if args.seed is not None:
+        if args.no_salt:
+            full_string = args.seed
+        else:
+            full_string = __version__ + args.seed
+        random.seed(int(hashlib.sha256(full_string.encode('utf-8')).hexdigest(), 16))
 
     # Condense everything into a dict
     return {
