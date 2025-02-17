@@ -41,7 +41,7 @@ def generate_patch_file(plando_filename='random_settings.json', worldcount=1, ma
     while True:
         print(f"RSL GENERATOR: RUNNING THE RANDOMIZER - ATTEMPT {retries+1} OF {max_retries}")
         completed_process = subprocess.run(
-            [sys.executable, os.path.join("randomizer", "OoTRandomizer.py"), "--settings=-", f"--seed={int(random.getrandbits(256))}"],
+            [os.path.join("randomizer", "target", "release", "ootr-cli.exe" if sys.platform == 'win32' else "ootr-cli"), "--settings=-", f"--seed={int(random.getrandbits(256))}"],
             capture_output=True,
             input=settings,
             encoding='utf-8',

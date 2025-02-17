@@ -20,8 +20,8 @@ def check_python():
 
 def check_version():
     """ Ensure the downloaded version of the randomizer is the correct, if not update """
-    if os.path.isfile(os.path.join('randomizer', 'version.py')):
-        from randomizer import version as ootrversion
+    if os.path.isfile(os.path.join('randomizer', 'Cargo.toml')):
+        from randomizer.rs import version as ootrversion
         if ootrversion.__version__ == rslv.randomizer_version:
             return
         print("Updating the randomizer...")
@@ -53,16 +53,16 @@ def download_randomizer():
     with open(os.path.join('randomizer', '__init__.py'), 'w') as fin:
         pass
 
-    # Restore permissions in the unzipped randomizer
-    for executable in [
-        os.path.join('randomizer', 'OoTRandomizer.py'),
-        os.path.join('randomizer', 'bin', 'Decompress', 'Decompress'),
-        os.path.join('randomizer', 'bin', 'Decompress', 'Decompress_ARM32'),
-        os.path.join('randomizer', 'bin', 'Decompress', 'Decompress_ARM64'),
-        os.path.join('randomizer', 'bin', 'Decompress', 'Decompress.out'),
-        os.path.join('randomizer', 'bin', 'Decompress', 'Decompress_ARM64.out'),
-    ]:
-        os.chmod(executable, os.stat(executable).st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    subprocess.run(['cargo', 'build', '--release', '--package=ootr-python'], cwd='randomizer', check=True)
+    if sys.platform == 'win32':
+        shutil.move(os.path.join('randomizer', 'target', 'release', 'rs.dll'), os.path.join('randomizer', 'rs.pyd'))
+    elif sys.platform == 'linux':
+        shutil.move(os.path.join('randomizer', 'target', 'release', 'librs.so'), os.path.join('randomizer', 'rs.so'))
+    elif sys.platform == 'darwin':
+        shutil.move(os.path.join('randomizer', 'target', 'release', 'librs.dylib'), os.path.join('randomizer', 'rs.so'))
+    else:
+        raise NotImplementedError(f'Unsupported platform: {sys.platform}')
+    subprocess.run(['cargo', 'build', '--release'], cwd='randomizer', check=True)
 
     # Delete the zip file
     cleanup(zippath)
