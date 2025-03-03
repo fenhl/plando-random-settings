@@ -1,4 +1,4 @@
-__version__ = "2.8.2 Fenhl-3"
+__version__ = "2.8.2 Fenhl-4"
 
 # Randomizer Info
 randomizer_repo = 'fenhl/OoT-Randomizer'
