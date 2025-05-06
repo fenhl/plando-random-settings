@@ -23,7 +23,10 @@ def load_weights_file(weights_fname):
     if os.path.isfile(fpath):
         with open(fpath) as fin:
             datain = json.load(fin)
+    return parse_weights(datain)
 
+
+def parse_weights(datain):
     weight_options = datain["options"] if "options" in datain else None
     conditionals = datain["conditionals"] if "conditionals" in datain else None
     weight_multiselect = datain["multiselect"] if "multiselect" in datain else None
@@ -129,7 +132,7 @@ def draw_dungeon_shortcuts(random_settings):
 def generate_weights_override(weights, override_weights_fname):
     # Load the weight dictionary
     if weights == "RSL":
-        weight_options, conditionals, weight_multiselect, weight_dict = load_weights_file("weights/rsl_season6.json")
+        weight_options, conditionals, weight_multiselect, weight_dict = load_weights_file("weights/rsl_season7.json")
     elif weights == "full-random":
         weight_options = None
         weight_dict = generate_balanced_weights(None)
@@ -140,8 +143,12 @@ def generate_weights_override(weights, override_weights_fname):
     # If an override_weights file name is provided, load it
     start_with = {"starting_inventory":[], "starting_songs":[], "starting_equipment":[]}
     if override_weights_fname is not None:
-        print(f"RSL GENERATOR: LOADING OVERRIDE WEIGHTS from {override_weights_fname}")
-        override_options, override_conditionals, override_multiselect, override_weights = load_weights_file(override_weights_fname)
+        if override_weights_fname == '-':
+            print("RSL GENERATOR: LOADING OVERRIDE WEIGHTS from standard input")
+            override_options, override_conditionals, override_multiselect, override_weights = parse_weights(json.load(sys.stdin))
+        else:
+            print(f"RSL GENERATOR: LOADING OVERRIDE WEIGHTS from {override_weights_fname}")
+            override_options, override_conditionals, override_multiselect, override_weights = load_weights_file(override_weights_fname)
         # Check for starting items, songs and equipment
         for key in start_with.keys():
             if key in override_weights.keys():
@@ -227,8 +234,6 @@ def generate_plando(weights, override_weights_fname, no_seed, plando_filename_ba
 
     # Add starting items, tricks, and excluded locations
     if weight_options is not None:
-        # if "conditionals" in weight_options:
-        #     conds.parse_conditionals(weight_options["conditionals"], weight_dict, random_settings, start_with)
         if "tricks" in weight_options:
             random_settings["allowed_tricks"] = weight_options["tricks"]
         if "disabled_locations" in weight_options:
@@ -265,8 +270,7 @@ def generate_plando(weights, override_weights_fname, no_seed, plando_filename_ba
     # Save the output plando
     output = {"settings": random_settings}
 
-    plando_filename = f'{plando_filename_base}_{datetime.datetime.utcnow():%Y-%m-%d_%H-%M-%S_%f}.json'
-    # plando_filename = f'random_settings.json'
+    plando_filename = f'{plando_filename_base}_{datetime.datetime.now(datetime.timezone.utc):%Y-%m-%d_%H-%M-%S_%f}.json'
 
     if not os.path.isdir("data"):
         os.mkdir("data")
