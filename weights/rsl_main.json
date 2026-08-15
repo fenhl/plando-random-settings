@@ -60,7 +60,8 @@
         "invert_dungeons_mq_count": [false, "0%"],
         "exclude_minimal_triforce_hunt": [false],
         "limit_mixed_pool_entrances": [false, 2, false],
-        "keysanity_key_get_keyrings": [false]
+        "keysanity_key_get_keyrings": [false],
+        "override_adult_trade_start": [false]
     },
     "multiselect": {
         "key_rings": 20,

@@ -233,6 +233,10 @@ def geometrically_draw_dungeon_shortcuts(random_settings, **kwargs):
     random_settings["dungeon_shortcuts"] = random.sample(ms_option_lookup["dungeon_shortcuts"], chooseN)
 
 
+def override_adult_trade_start(random_settings, **kwargs):
+    random_settings["adult_trade_start"] = ["Prescription", "Eyeball Frog", "Eyedrops", "Claim Check"]
+
+
 def limit_overworld_entrances_in_mixed_entrance_pools(random_settings, **kwargs):
     if len(random_settings["mix_entrance_pools"]) < 1:
         return
